@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Cashier;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,17 +10,17 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Check if user is authenticated and is admin
+        // Check if user is authenticated and is cashier
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
-        // Check if user is admin
-        if (Auth::user()->role !== 'admin') {
-            abort(403, 'Unauthorized access. Admin role required.');
+        // Check if user is cashier
+        if (Auth::user()->role !== 'cashier') {
+            abort(403, 'Unauthorized access. Cashier role required.');
         }
 
-        return view('admin.dashboard', [
+        return view('cashier.dashboard', [
             'user' => Auth::user()
         ]);
     }

@@ -4,43 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'POS System')</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Load CSS directly -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    
+    <!-- Basic fallback styles -->
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #f8f9fa; }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 250px; background: #1f2937; color: white; }
+        .main-content { flex: 1; padding: 20px; }
+        .content-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .page-title { font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #1f2937; }
+    </style>
 </head>
-<body class="flex min-h-screen bg-gray-100">
-    @auth
-        @if(auth()->user()->isAdmin())
-            @include('partials.admin-sidebar')
-        @elseif(auth()->user()->isCashier())
-            @include('partials.cashier-sidebar')
-        @endif
-    @endauth
+<body>
+    <div class="layout">
+        @auth
+            @if(auth()->user()->isAdmin())
+                @include('partials.admin-sidebar')
+            @elseif(auth()->user()->isCashier())
+                @include('partials.cashier-sidebar')
+            @endif
+        @endauth
 
-    <main class="flex-1 p-6">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h1 class="text-2xl font-bold mb-4">@yield('title')</h1>
-            @yield('content')
-        </div>
-    </main>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>@yield('title', 'POS')</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="flex">
-    @auth
-        @if(auth()->user()->isAdmin())
-            @include('partials.admin-sidebar')
-        @elseif(auth()->user()->isCashier())
-            @include('partials.cashier-sidebar')
-        @endif
-    @endauth
+        <main class="main-content">
+            <div class="content-box">
+                <h1 class="page-title">@yield('title')</h1>
+                @yield('content')
+            </div>
+        </main>
+    </div>
 
-    <main class="flex-1 p-6">
-        @yield('content')
-    </main>
+    <!-- Load JavaScript directly -->
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

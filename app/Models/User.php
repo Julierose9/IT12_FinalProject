@@ -2,30 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'username', 'password', 'role',
+        'name',
+        'username', // Make sure this is included
+        'password',
+        'role',
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
-
-    // Allow login with username OR email
-    public function getAuthIdentifierName()
-    {
-        return 'username'; // or 'email' if you prefer
-    }
-
-    // Optional: Allow login with either
-    public function findForPassport($identifier)
-    {
-        return $this->orWhere('email', $identifier)->orWhere('username', $identifier)->first();
-    }
 }

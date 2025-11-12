@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -26,6 +27,22 @@ class LoginController extends Controller
             'username' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
+
+        // Debug: Check if user exists
+        $user = \App\Models\User::where('username', $credentials['username'])->first();
+        
+        if (!$user) {
+            return back()->withErrors([
+                'username' => 'Username not found.',
+            ])->onlyInput('username');
+        }
+
+        // Debug: Check password manually
+        if (!Hash::check($credentials['password'], $user->password)) {
+            return back()->withErrors([
+                'username' => 'Password is incorrect.',
+            ])->onlyInput('username');
+        }
 
         // Attempt login using username and password
         if (Auth::attempt($credentials, $request->filled('remember'))) {
@@ -51,7 +68,7 @@ class LoginController extends Controller
 
         // Invalid credentials
         return back()->withErrors([
-            'username' => 'Invalid username or password.',
+            'username' => 'Authentication failed.',
         ])->onlyInput('username');
     }
 

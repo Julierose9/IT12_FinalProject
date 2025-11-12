@@ -21,19 +21,34 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        $field = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-
-        if (Auth::attempt([$field => $request->username, 'password' => $request->password], $request->filled('remember'))) {
+        // Login using username only (no email fallback)
+        if (Auth::attempt(['username' => $request->username, 'password' => $request->password], $request->filled('remember'))) {
+            $request->session()->regenerate();
+            
             $user = Auth::user();
 
-            return $user->role === 'admin'
-                ? redirect()->route('admin.dashboard')
-                : redirect()->route('cashier.dashboard');
+            // Redirect based on role
+            return $this->redirectByRole($user);
         }
 
         throw ValidationException::withMessages([
-            'username' => [trans('auth.failed')],
+            'username' => 'Invalid username or password.',
         ]);
+    }
+
+    private function redirectByRole($user)
+    {
+        switch ($user->role) {
+            case 'admin':
+                return redirect()->intended(route('admin.dashboard'));
+            case 'cashier':
+                return redirect()->intended(route('cashier.dashboard'));
+            default:
+                Auth::logout();
+                throw ValidationException::withMessages([
+                    'username' => 'Unauthorized role. Please contact administrator.',
+                ]);
+        }
     }
 
     public function logout(Request $request)
@@ -42,6 +57,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('login')->with('status', 'You have been logged out successfully.');
     }
 }
