@@ -17,7 +17,8 @@ class Supplier extends Model
         'SupplierID',
         'SupName',
         'SupContactNum',
-        'Address'
+        'Address',
+        'Status'
     ];
 
     /**
@@ -25,6 +26,14 @@ class Supplier extends Model
      */
     public function products()
     {
-        return $this->hasMany(Product::class, 'SupID');
+        return $this->hasMany(Product::class, 'SupID', 'SupplierID');
+    }
+
+    /**
+     * Get the stock ins for the supplier.
+     */
+    public function stockIns()
+    {
+        return $this->hasMany(StockIn::class, 'SupID', 'SupplierID');
     }
 }

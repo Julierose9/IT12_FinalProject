@@ -11,6 +11,10 @@ use App\Http\Controllers\Admin\PullOutController;
 use App\Http\Controllers\Cashier\OrderController as CashierOrderController;
 use App\Http\Controllers\Cashier\PaymentController as CashierPaymentController;
 use App\Http\Controllers\Cashier\TransactionController as CashierTransactionController;
+use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\RecordController;
 
 // Public Routes
 Route::get('/', fn() => redirect()->route('login'));
@@ -57,38 +61,48 @@ Route::middleware('auth')->group(function () {
         });
 
         // Suppliers Routes
-        Route::prefix('suppliers')->name('suppliers.')->group(function () {
-            Route::get('/', function () {
-                return view('admin.suppliers.index');
-            })->name('index');
-            Route::get('/create', function () {
-                return view('admin.suppliers.create');
-            })->name('create');
-        });
+Route::prefix('suppliers')->name('suppliers.')->group(function () {
+    Route::get('/', [SupplierController::class, 'index'])->name('index');
+    Route::get('/create', [SupplierController::class, 'create'])->name('create');
+    Route::post('/', [SupplierController::class, 'store'])->name('store');
+    Route::get('/{supplier}', [SupplierController::class, 'show'])->name('show');
+    Route::get('/{supplier}/edit', [SupplierController::class, 'edit'])->name('edit');
+    Route::put('/{supplier}', [SupplierController::class, 'update'])->name('update');
+    Route::delete('/{supplier}', [SupplierController::class, 'destroy'])->name('destroy');
+});
 
-        // Employees Routes
-        Route::prefix('employees')->name('employees.')->group(function () {
-            Route::get('/', function () {
-                return view('admin.employees.index');
-            })->name('index');
-            Route::get('/create', function () {
-                return view('admin.employees.create');
-            })->name('create');
-        });
+       // Employees Routes
+Route::prefix('employees')->name('employees.')->group(function () {
+    Route::get('/', [EmployeeController::class, 'index'])->name('index');
+    Route::get('/create', [EmployeeController::class, 'create'])->name('create');
+    Route::post('/', [EmployeeController::class, 'store'])->name('store');
+    Route::get('/{employee}', [EmployeeController::class, 'show'])->name('show');
+    Route::get('/{employee}/edit', [EmployeeController::class, 'edit'])->name('edit');
+    Route::put('/{employee}', [EmployeeController::class, 'update'])->name('update');
+    Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
+});
 
         // Accounts Routes
-        Route::prefix('accounts')->name('accounts.')->group(function () {
-            Route::get('/', function () {
-                return view('admin.accounts.index');
-            })->name('index');
-        });
+Route::prefix('accounts')->name('accounts.')->group(function () {
+    Route::get('/', [AccountController::class, 'index'])->name('index');
+    Route::get('/create', [AccountController::class, 'create'])->name('create');
+    Route::post('/', [AccountController::class, 'store'])->name('store');
+    Route::get('/{account}', [AccountController::class, 'show'])->name('show');
+    Route::get('/{account}/edit', [AccountController::class, 'edit'])->name('edit');
+    Route::put('/{account}', [AccountController::class, 'update'])->name('update');
+    Route::delete('/{account}', [AccountController::class, 'destroy'])->name('destroy');
+    Route::post('/{account}/reset-password', [AccountController::class, 'resetPassword'])->name('reset-password');
+});
 
-        // Records Routes
-        Route::prefix('records')->name('records.')->group(function () {
-            Route::get('/', function () {
-                return view('admin.records.index');
-            })->name('index');
-        });
+       // Records Routes
+Route::prefix('records')->name('records.')->group(function () {
+    Route::get('/', [RecordController::class, 'index'])->name('index');
+    Route::get('/create', [RecordController::class, 'create'])->name('create');
+    Route::post('/', [RecordController::class, 'store'])->name('store');
+    Route::get('/{record}', [RecordController::class, 'show'])->name('show');
+    Route::get('/export', [RecordController::class, 'export'])->name('export');
+    Route::post('/export', [RecordController::class, 'export'])->name('export.post');
+});
 
         // Reports Routes
         Route::prefix('reports')->name('reports.')->group(function () {
