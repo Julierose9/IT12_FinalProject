@@ -8,9 +8,21 @@ use App\Http\Controllers\Cashier\DashboardController as CashierDashboardControll
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StockInController;
 use App\Http\Controllers\Admin\PullOutController;
+use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Cashier\OrderController as CashierOrderController;
 use App\Http\Controllers\Cashier\PaymentController as CashierPaymentController;
 use App\Http\Controllers\Cashier\TransactionController as CashierTransactionController;
+use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Cashier\PaymentController;
+use App\Http\Controllers\Cashier\DailySalesController;
+
+
+
+
+
 
 // Public Routes
 Route::get('/', fn() => redirect()->route('login'));
@@ -23,102 +35,97 @@ Route::post('/register', [RegisterController::class, 'register']);
 
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
-    // Admin Routes
+
     Route::prefix('admin')->name('admin.')->group(function () {
+
+        // Dashboard
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        
-        // Products Routes
-        Route::prefix('products')->name('products.')->group(function () {
-            Route::get('/', [ProductController::class, 'index'])->name('index');
-            Route::get('/create', [ProductController::class, 'create'])->name('create');
-            Route::post('/', [ProductController::class, 'store'])->name('store');
-            Route::get('/{product}', [ProductController::class, 'show'])->name('show');
-            Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
-            Route::put('/{product}', [ProductController::class, 'update'])->name('update');
-            Route::delete('/{product}', [ProductController::class, 'destroy'])->name('destroy');
-        });
 
-        // Stock In Routes
-        Route::prefix('stock-in')->name('stock-in.')->group(function () {
-            Route::get('/', [StockInController::class, 'index'])->name('index');
-            Route::get('/create', [StockInController::class, 'create'])->name('create');
-            Route::post('/', [StockInController::class, 'store'])->name('store');
-        });
-
-        // Pullouts Routes
-        Route::prefix('pullouts')->name('pullouts.')->group(function () {
-            Route::get('/', [PullOutController::class, 'index'])->name('index');
-            Route::get('/create', [PullOutController::class, 'create'])->name('create');
-            Route::post('/', [PullOutController::class, 'store'])->name('store');
-            Route::get('/{pullOut}', [PullOutController::class, 'show'])->name('show');
-            Route::get('/{pullOut}/edit', [PullOutController::class, 'edit'])->name('edit');
-            Route::put('/{pullOut}', [PullOutController::class, 'update'])->name('update');
-            Route::delete('/{pullOut}', [PullOutController::class, 'destroy'])->name('destroy');
-        });
-
-        // Suppliers Routes
-        Route::prefix('suppliers')->name('suppliers.')->group(function () {
-            Route::get('/', function () {
-                return view('admin.suppliers.index');
-            })->name('index');
-            Route::get('/create', function () {
-                return view('admin.suppliers.create');
-            })->name('create');
-        });
-
-        // Employees Routes
-        Route::prefix('employees')->name('employees.')->group(function () {
-            Route::get('/', function () {
-                return view('admin.employees.index');
-            })->name('index');
-            Route::get('/create', function () {
-                return view('admin.employees.create');
-            })->name('create');
-        });
-
-        // Accounts Routes
+        // Accounts
         Route::prefix('accounts')->name('accounts.')->group(function () {
-            Route::get('/', function () {
-                return view('admin.accounts.index');
-            })->name('index');
+            Route::get('/', [AccountController::class, 'index'])->name('index');
+            Route::post('/store', [AccountController::class, 'store'])->name('store');
         });
 
-        // Records Routes
+        // ====================== RECORDS ======================
         Route::prefix('records')->name('records.')->group(function () {
-            Route::get('/', function () {
-                return view('admin.records.index');
-            })->name('index');
+
+            // Suppliers Routes
+Route::prefix('suppliers')->name('suppliers.')->group(function () {
+    Route::get('/', [SupplierController::class, 'index'])->name('index');
+    Route::get('/create', [SupplierController::class, 'create'])->name('create');
+    Route::post('/', [SupplierController::class, 'store'])->name('store');
+    Route::get('/{supplier}', [SupplierController::class, 'show'])->name('show');
+    Route::get('/{supplier}/edit', [SupplierController::class, 'edit'])->name('edit');
+    Route::put('/{supplier}', [SupplierController::class, 'update'])->name('update');
+    Route::delete('/{supplier}', [SupplierController::class, 'destroy'])->name('destroy');
+});
+
+            // --- EMPLOYEES ---
+
+
+            Route::prefix('employees')->name('employees.')->group(function () {
+                Route::get('/', [EmployeeController::class, 'index'])->name('index');
+                Route::get('/create', [EmployeeController::class, 'create'])->name('create');
+                Route::post('/', [EmployeeController::class, 'store'])->name('store');
+                Route::get('/{employee}', [EmployeeController::class, 'show'])->name('show');
+                Route::get('/{employee}/edit', [EmployeeController::class, 'edit'])->name('edit');
+                Route::put('/{employee}', [EmployeeController::class, 'update'])->name('update');
+                Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
+            });
+            
+            
+            
+            
+
+            // --- PRODUCTS ---
+            Route::prefix('products')->name('products.')->group(function () {
+                Route::get('/', [ProductController::class, 'index'])->name('index');
+                Route::get('/create', [ProductController::class, 'create'])->name('create');
+                Route::post('/', [ProductController::class, 'store'])->name('store');
+                Route::get('/{product}', [ProductController::class, 'show'])->name('show');
+                Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
+                Route::put('/{product}', [ProductController::class, 'update'])->name('update');
+                Route::delete('/{product}', [ProductController::class, 'destroy'])->name('destroy');
+            });
         });
 
-        // Reports Routes
+        // ====================== TRANSACTIONS ======================
+        Route::prefix('transactions')->name('transactions.')->group(function () {
+
+            Route::prefix('stock-in')->name('stock-in.')->group(function () {
+                Route::get('/', [StockInController::class, 'index'])->name('index');
+                Route::get('/create', [StockInController::class, 'create'])->name('create');
+                Route::post('/', [StockInController::class, 'store'])->name('store');
+            });
+
+            Route::prefix('pullouts')->name('pullouts.')->group(function () {
+                Route::get('/', [PullOutController::class, 'index'])->name('index');
+                Route::get('/create', [PullOutController::class, 'create'])->name('create');
+                Route::post('/', [PullOutController::class, 'store'])->name('store');
+                Route::get('/{pullOut}', [PullOutController::class, 'show'])->name('show');
+                Route::get('/{pullOut}/edit', [PullOutController::class, 'edit'])->name('edit');
+                Route::put('/{pullOut}', [PullOutController::class, 'update'])->name('update');
+                Route::delete('/{pullOut}', [PullOutController::class, 'destroy'])->name('destroy');
+            });
+        });
+
+        // ====================== REPORTS ======================
         Route::prefix('reports')->name('reports.')->group(function () {
-            Route::get('/analytics', function () {
-                return view('admin.reports.analytics');
-            })->name('analytics');
-            Route::get('/daily-sales', function () {
-                return view('admin.reports.daily-sales');
-            })->name('daily-sales');
-            Route::get('/inventory', function () {
-                return view('admin.reports.inventory');
-            })->name('inventory');
-            Route::get('/pullouts', function () {
-                return view('admin.reports.pullouts');
-            })->name('pullouts');
-        });
+            Route::get('/daily-sales', fn() => view('admin.reports.daily-sales'))->name('daily-sales');
+            Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');            
+            Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory');        });
 
-        // Settings Routes
+        // ====================== SETTINGS ======================
         Route::prefix('settings')->name('settings.')->group(function () {
-            Route::get('/', function () {
-                return view('admin.settings.index');
-            })->name('index');
+            Route::get('/', fn() => view('admin.settings.index'))->name('index');
         });
     });
-    
-    // Cashier Routes
+
+    // ====================== CASHIER ======================
     Route::prefix('cashier')->name('cashier.')->group(function () {
         Route::get('/dashboard', [CashierDashboardController::class, 'index'])->name('dashboard');
-        
-        // Orders Routes
+
         Route::prefix('orders')->name('orders.')->group(function () {
             Route::get('/', [CashierOrderController::class, 'index'])->name('index');
             Route::get('/create', [CashierOrderController::class, 'create'])->name('create');
@@ -130,45 +137,28 @@ Route::middleware('auth')->group(function () {
             Route::post('/{order}/update-status', [CashierOrderController::class, 'updateStatus'])->name('update-status');
         });
 
-        // Payments Routes
         Route::prefix('payments')->name('payments.')->group(function () {
-            Route::get('/', [CashierPaymentController::class, 'index'])->name('index');
-            Route::get('/create', [CashierPaymentController::class, 'create'])->name('create');
-            Route::post('/', [CashierPaymentController::class, 'store'])->name('store');
-            Route::get('/{payment}', [CashierPaymentController::class, 'show'])->name('show');
-            Route::put('/{payment}', [CashierPaymentController::class, 'update'])->name('update');
-            Route::post('/{payment}/refund', [CashierPaymentController::class, 'refund'])->name('refund');
+            Route::get('/', [PaymentController::class, 'index'])->name('index');
+            Route::get('/create', [PaymentController::class, 'create'])->name('create');
+            Route::post('/', [PaymentController::class, 'store'])->name('store');
+            Route::get('/{payment}', [PaymentController::class, 'show'])->name('show');
+            Route::put('/{payment}', [PaymentController::class, 'update'])->name('update');
+            Route::post('/{payment}/refund', [PaymentController::class, 'refund'])->name('refund');
         });
 
-        // Transactions Routes
         Route::prefix('transactions')->name('transactions.')->group(function () {
             Route::get('/', [CashierTransactionController::class, 'index'])->name('index');
             Route::get('/{transaction}', [CashierTransactionController::class, 'show'])->name('show');
             Route::get('/{transaction}/receipt', [CashierTransactionController::class, 'receipt'])->name('receipt');
         });
 
-        // Reports Routes for Cashier
         Route::prefix('reports')->name('reports.')->group(function () {
-            Route::get('/daily-sales', function () {
-                return view('cashier.reports.daily-sales');
-            })->name('daily-sales');
-            Route::get('/transactions', function () {
-                return view('cashier.reports.transactions');
-            })->name('transactions');
-            Route::get('/payment-summary', function () {
-                return view('cashier.reports.payment-summary');
-            })->name('payment-summary');
+                Route::get('/daily-sales', [DailySalesController::class, 'dailySales'])
+                    ->name('daily-sales');         
+        
         });
 
-        // Settings Routes for Cashier
-        Route::prefix('settings')->name('settings.')->group(function () {
-            Route::get('/', function () {
-                return view('cashier.settings.index');
-            })->name('index');
-            Route::get('/profile', function () {
-                return view('cashier.settings.profile');
-            })->name('profile');
-        });
+       
     });
 });
 

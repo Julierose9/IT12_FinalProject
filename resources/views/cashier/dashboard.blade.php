@@ -121,14 +121,10 @@
 
       {{-- Sales & Transactions Dropdown --}}
       <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#salesSubmenu">
-        <i class="bi bi-cash-stack me-2"></i> Sales & Transactions
+        <i class="bi bi-cash-stack me-2"></i> Transactions
       </a>
       <div class="collapse" id="salesSubmenu">
         <div class="nav flex-column ms-3">
-          {{-- Point of Sale --}}
-          <a class="nav-link" href="{{ route('cashier.orders.create') }}">
-            <i class="bi bi-cart-plus me-2"></i> New Sale
-          </a>
 
           {{-- Orders --}}
           <a class="nav-link" href="{{ route('cashier.orders.index') }}">
@@ -154,21 +150,10 @@
       <div class="collapse" id="reportsSubmenu">
         <div class="nav flex-column ms-3">
           <a class="nav-link" href="{{ route('cashier.reports.daily-sales') }}">
-            <i class="bi bi-graph-up me-2"></i> Sales Analytics
-          </a>
-          <a class="nav-link" href="{{ route('cashier.reports.transactions') }}">
-            <i class="bi bi-receipt me-2"></i> Transaction Reports
-          </a>
-          <a class="nav-link" href="{{ route('cashier.reports.payment-summary') }}">
-            <i class="bi bi-wallet2 me-2"></i> Payment Summary
+            <i class="bi bi-graph-up me-2"></i> Daily Sales
           </a>
         </div>
       </div>
-
-      {{-- Settings --}}
-      <a class="nav-link" href="{{ route('cashier.settings.index') }}">
-        <i class="bi bi-gear me-2"></i> Settings
-      </a>
     </nav>
   </div>
 
@@ -218,62 +203,75 @@
 
     {{-- Stats row --}}
     <div class="row g-3 mb-4">
-      <div class="col-md-3">
-        <div class="card p-3 stat-card">
-          <div class="d-flex align-items-center">
-            <div class="stat-icon me-3" style="background:#f3d6ff;">
-              <i class="bi bi-box-seam" style="color:#5a3e6b;"></i>
-            </div>
-            <div>
-              <small class="text-muted">Stock in storage</small>
-              <div style="font-weight:700; font-size:20px">9k</div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="col-md-3">
-        <div class="card p-3 stat-card">
-          <div class="d-flex align-items-center">
-            <div class="stat-icon me-3" style="background:#fff2e0;">
-              <i class="bi bi-arrow-up-right" style="color:#f08a24;"></i>
-            </div>
-            <div>
-              <small class="text-muted">Stock out today</small>
-              <div style="font-weight:700; font-size:20px">300</div>
-            </div>
-          </div>
+  <div class="col-md-3">
+    <div class="card p-3 stat-card">
+      <div class="d-flex">
+        <div class="stat-icon me-3" style="background:#f3d6ff;">
+          <i class="bi bi-box-seam" style="color:#5a3e6b;"></i>
         </div>
-      </div>
 
-      <div class="col-md-3">
-        <div class="card p-3 stat-card">
-          <div class="d-flex align-items-center">
-            <div class="stat-icon me-3" style="background:#e9fbf1;">
-              <i class="bi bi-people" style="color:#23b07a;"></i>
-            </div>
-            <div>
-              <small class="text-muted">New clients</small>
-              <div style="font-weight:700; font-size:20px">5</div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <div class="flex-fill d-flex flex-column">
+          <small class="text-muted">Stock in storage</small>
 
-      <div class="col-md-3">
-        <div class="card p-3 stat-card">
-          <div class="d-flex align-items-center">
-            <div class="stat-icon me-3" style="background:#fff0f0;">
-              <i class="bi bi-bell" style="color:#e05252;"></i>
-            </div>
-            <div>
-              <small class="text-muted">Low stock items</small>
-              <div style="font-weight:700; font-size:20px">8</div>
-            </div>
+          <div class="mt-auto text-end" style="font-weight:700; font-size:20px;">
+            9k
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card p-3 stat-card">
+      <div class="d-flex">
+        <div class="stat-icon me-3" style="background:#fff2e0;">
+          <i class="bi bi-arrow-up-right" style="color:#f08a24;"></i>
+        </div>
+
+        <div class="flex-fill d-flex flex-column">
+          <small class="text-muted">Stock out today</small>
+          <div class="mt-auto text-end" style="font-weight:700; font-size:20px;">
+            300
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card p-3 stat-card">
+      <div class="d-flex">
+        <div class="stat-icon me-3" style="background:#e9fbf1;">
+          <i class="bi bi-people" style="color:#23b07a;"></i>
+        </div>
+
+        <div class="flex-fill d-flex flex-column">
+          <small class="text-muted">New clients</small>
+          <div class="mt-auto text-end" style="font-weight:700; font-size:20px;">
+            5
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card p-3 stat-card">
+      <div class="d-flex">
+        <div class="stat-icon me-3" style="background:#fff0f0;">
+          <i class="bi bi-bell" style="color:#e05252;"></i>
+        </div>
+
+        <div class="flex-fill d-flex flex-column">
+          <small class="text-muted">Low stock items</small>
+          <div class="mt-auto text-end" style="font-weight:700; font-size:20px;">
+            8
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
     {{-- Charts + lists --}}
     <div class="row g-3">

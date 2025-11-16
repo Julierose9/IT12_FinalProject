@@ -108,100 +108,94 @@
 </head>
 <body>
 
-  {{-- Sidebar --}}
-  <aside class="sidebar">
-    <div class="brand">
-      <img src="{{ asset('images/logo_.png') }}" alt="Logo">
-      <div>
-        <div style="font-weight:600">Dora's</div>
-        <small class="text-muted">Gift Shop</small>
+{{-- Sidebar --}}
+<aside class="sidebar">
+  <div class="brand">
+    <img src="{{ asset('images/logo_.png') }}" alt="Logo">
+    <div>
+      <div style="font-weight:600">Dora's</div>
+      <small class="text-muted">Gift Shop</small>
+    </div>
+  </div>
+
+  {{-- Scrollable Navigation --}}
+  <div class="sidebar-nav">
+    <nav class="nav flex-column">
+      {{-- Dashboard --}}
+      <a class="nav-link active" href="{{ route('admin.dashboard') }}">
+        <i class="bi bi-house-door-fill me-2"></i> Dashboard
+      </a>
+
+      {{-- Accounts --}}
+      <a class="nav-link" href="{{ route('admin.accounts.index') }}">
+        <i class="bi bi-person-badge me-2"></i> Accounts
+      </a>
+
+      {{-- Records with Submenu --}}
+      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#recordsSubmenu">
+        <i class="bi bi-file-earmark-text me-2"></i> Records
+      </a>
+      
+      <div class="collapse" id="recordsSubmenu">
+        <div class="nav flex-column ms-3">
+          <a class="nav-link" href="{{ route('admin.records.suppliers.index') }}">
+            <i class="bi bi-truck me-2"></i> Suppliers
+          </a>
+          <a class="nav-link" href="{{ route('admin.records.employees.index') }}">
+            <i class="bi bi-people me-2"></i> Employees
+          </a>
+          <a class="nav-link" href="{{ route('admin.records.products.index') }}">
+            <i class="bi bi-box-seam me-2"></i> Products
+          </a>
+        </div>
       </div>
-    </div>
 
-    {{-- Scrollable Navigation --}}
-    <div class="sidebar-nav">
-      <nav class="nav flex-column">
-        {{-- Dashboard --}}
-        <a class="nav-link active" href="{{ route('admin.dashboard') }}">
-          <i class="bi bi-house-door-fill me-2"></i> Dashboard
-        </a>
+      {{-- Transactions Dropdown --}}
+      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#transactionsSubmenu">
+        <i class="bi bi-arrow-left-right me-2"></i> Transactions
+      </a>
+      <div class="collapse" id="transactionsSubmenu">
+        <div class="nav flex-column ms-3">
+          {{-- Stock In --}}
+          <a class="nav-link" href="{{ route('admin.transactions.stock-in.index') }}">
+            <i class="bi bi-arrow-down-circle me-2"></i> Stock In
+          </a>
 
-        {{-- Products --}}
-        <a class="nav-link" href="{{ route('admin.products.index') }}">
-          <i class="bi bi-box-seam me-2"></i> Products
-        </a>
-
-        {{-- Transactions Dropdown --}}
-        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#transactionsSubmenu">
-          <i class="bi bi-arrow-left-right me-2"></i> Transactions
-        </a>
-        <div class="collapse" id="transactionsSubmenu">
-          <div class="nav flex-column ms-3">
-            {{-- Stock In --}}
-            <a class="nav-link" href="{{ route('admin.stock-in.index') }}">
-              <i class="bi bi-arrow-down-circle me-2"></i> Stock In
-            </a>
-
-            {{-- Pullouts --}}
-            <a class="nav-link" href="{{ route('admin.pullouts.index') }}">
-              <i class="bi bi-arrow-up-circle me-2"></i> Pullouts
-            </a>
-          </div>
+          {{-- Pullouts --}}
+          <a class="nav-link" href="{{ route('admin.transactions.pullouts.index') }}">
+            <i class="bi bi-arrow-up-circle me-2"></i> Pullouts
+          </a>
         </div>
+      </div>
 
-        {{-- Suppliers --}}
-        <a class="nav-link" href="{{ route('admin.suppliers.index') }}">
-          <i class="bi bi-truck me-2"></i> Suppliers
-        </a>
-
-        {{-- Employees --}}
-        <a class="nav-link" href="{{ route('admin.employees.index') }}">
-          <i class="bi bi-people me-2"></i> Employees
-        </a>
-
-        {{-- Accounts --}}
-        <a class="nav-link" href="{{ route('admin.accounts.index') }}">
-          <i class="bi bi-person-badge me-2"></i> Accounts
-        </a>
-
-        {{-- Records --}}
-        <a class="nav-link" href="{{ route('admin.records.index') }}">
-          <i class="bi bi-archive me-2"></i> Records
-        </a>
-
-        {{-- Reports with Submenu --}}
-        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#reportsSubmenu">
-          <i class="bi bi-file-earmark-text me-2"></i> Reports
-        </a>
-        <div class="collapse" id="reportsSubmenu">
-          <div class="nav flex-column ms-3">
-            <a class="nav-link" href="{{ route('admin.reports.analytics') }}">
-              <i class="bi bi-graph-up me-2"></i> Analytics
-            </a>
-            <a class="nav-link" href="{{ route('admin.reports.daily-sales') }}">
-              <i class="bi bi-calendar-day me-2"></i> Daily Sales
-            </a>
-            <a class="nav-link" href="{{ route('admin.reports.inventory') }}">
-              <i class="bi bi-clipboard-data me-2"></i> Inventory
-            </a>
-            <a class="nav-link" href="{{ route('admin.reports.pullouts') }}">
-              <i class="bi bi-box-arrow-up me-2"></i> Pullouts
-            </a>
-          </div>
+      {{-- Reports with Submenu --}}
+      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#reportsSubmenu">
+        <i class="bi bi-file-earmark-text me-2"></i> Reports
+      </a>
+      <div class="collapse" id="reportsSubmenu">
+        <div class="nav flex-column ms-3">
+          <a class="nav-link" href="{{ route('admin.reports.transaction') }}">
+            <i class="bi bi-clipboard-data me-2"></i> Transaction 
+          </a>
+          <a class="nav-link" href="{{ route('admin.reports.inventory') }}">
+            <i class="bi bi-clipboard-data me-2"></i> Inventory
+          </a>
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
+  </div>
 
-    {{-- Fixed Footer with Logout --}}
-    <div class="sidebar-footer">
-      <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button class="btn btn-outline-secondary btn-sm w-100">
-          <i class="bi bi-box-arrow-right me-1"></i> Sign Out
-        </button>
-      </form>
-    </div>
-  </aside>
+  {{-- Fixed Footer with Logout --}}
+  <div class="sidebar-footer">
+    <form method="POST" action="{{ route('logout') }}">
+      @csrf
+      <button class="btn btn-outline-secondary btn-sm w-100">
+        <i class="bi bi-b
+        ox-arrow-right me-1"></i> Sign Out
+      </button>
+    </form>
+  </div>
+</aside>
 
   {{-- Content --}}
   <main class="content-wrap">
@@ -228,64 +222,78 @@
       </div>
     </div>
 
-    {{-- Stats row --}}
-    <div class="row g-3 mb-4">
-      <div class="col-md-3">
-        <div class="card p-3 stat-card">
-          <div class="d-flex align-items-center">
-            <div class="stat-icon me-3" style="background:#f3d6ff;">
-              <i class="bi bi-box-seam" style="color:#5a3e6b;"></i>
-            </div>
-            <div>
-              <small class="text-muted">Stock in storage</small>
-              <div style="font-weight:700; font-size:20px">9k</div>
-            </div>
-          </div>
-        </div>
-      </div>
+   <div class="row g-3 mb-4">
 
-      <div class="col-md-3">
-        <div class="card p-3 stat-card">
-          <div class="d-flex align-items-center">
-            <div class="stat-icon me-3" style="background:#fff2e0;">
-              <i class="bi bi-arrow-up-right" style="color:#f08a24;"></i>
-            </div>
-            <div>
-              <small class="text-muted">Stock out today</small>
-              <div style="font-weight:700; font-size:20px">300</div>
-            </div>
-          </div>
+  <div class="col-md-3">
+    <div class="card p-3 stat-card">
+      <div class="d-flex">
+        <div class="stat-icon me-3" style="background:#f3d6ff;">
+          <i class="bi bi-box-seam" style="color:#5a3e6b;"></i>
         </div>
-      </div>
 
-      <div class="col-md-3">
-        <div class="card p-3 stat-card">
-          <div class="d-flex align-items-center">
-            <div class="stat-icon me-3" style="background:#e9fbf1;">
-              <i class="bi bi-people" style="color:#23b07a;"></i>
-            </div>
-            <div>
-              <small class="text-muted">New clients</small>
-              <div style="font-weight:700; font-size:20px">5</div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <div class="flex-fill d-flex flex-column">
+          <small class="text-muted">Stock in storage</small>
 
-      <div class="col-md-3">
-        <div class="card p-3 stat-card">
-          <div class="d-flex align-items-center">
-            <div class="stat-icon me-3" style="background:#fff0f0;">
-              <i class="bi bi-bell" style="color:#e05252;"></i>
-            </div>
-            <div>
-              <small class="text-muted">Low stock items</small>
-              <div style="font-weight:700; font-size:20px">8</div>
-            </div>
+          <div class="mt-auto text-end" style="font-weight:700; font-size:20px;">
+            9k
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card p-3 stat-card">
+      <div class="d-flex">
+        <div class="stat-icon me-3" style="background:#fff2e0;">
+          <i class="bi bi-arrow-up-right" style="color:#f08a24;"></i>
+        </div>
+
+        <div class="flex-fill d-flex flex-column">
+          <small class="text-muted">Stock out today</small>
+          <div class="mt-auto text-end" style="font-weight:700; font-size:20px;">
+            300
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card p-3 stat-card">
+      <div class="d-flex">
+        <div class="stat-icon me-3" style="background:#e9fbf1;">
+          <i class="bi bi-people" style="color:#23b07a;"></i>
+        </div>
+
+        <div class="flex-fill d-flex flex-column">
+          <small class="text-muted">New clients</small>
+          <div class="mt-auto text-end" style="font-weight:700; font-size:20px;">
+            5
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card p-3 stat-card">
+      <div class="d-flex">
+        <div class="stat-icon me-3" style="background:#fff0f0;">
+          <i class="bi bi-bell" style="color:#e05252;"></i>
+        </div>
+
+        <div class="flex-fill d-flex flex-column">
+          <small class="text-muted">Low stock items</small>
+          <div class="mt-auto text-end" style="font-weight:700; font-size:20px;">
+            8
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
     {{-- Charts + lists --}}
     <div class="row g-3">
@@ -345,7 +353,7 @@
 
         <div class="card p-3 card-small">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <strong>Stock Discrepancy</strong>
+            <strong>Stock </strong>
             <small class="text-muted">vs Recorded</small>
           </div>
           <canvas id="barChart" height="140"></canvas>

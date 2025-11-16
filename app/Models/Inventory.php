@@ -5,32 +5,55 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Inventory extends Model
+class Product extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'InvID';
+    protected $primaryKey = 'ProdID';
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'InvID',
         'ProdID',
-        'QtyChange',
-        'ChangeType',
-        'ChangeDateTime',
-        'Reason'
+        'ProdName',
+        'Category',
+        'Description',
+        'OriginalPrice',
+        'SellingPrice',
+        'CurrentStock',
+        'ReorderLevel',
+        'Status',
+        'Image',
     ];
 
     protected $casts = [
-        'ChangeDateTime' => 'datetime',
+        'OriginalPrice' => 'decimal:2',
+        'SellingPrice' => 'decimal:2',
+        'CurrentStock' => 'integer',
+        'ReorderLevel' => 'integer',
     ];
 
     /**
-     * Get the product that owns the inventory record.
+     * Relationship: Product belongs to a category
      */
-    public function product()
+    public function category()
     {
-        return $this->belongsTo(Product::class, 'ProdID');
+        return $this->belongsTo(Category::class, 'Category', 'CategoryID');
+    }
+
+    /**
+     * Stock In relationship
+     */
+    public function stockIns()
+    {
+        return $this->hasMany(StockIn::class, 'ProdID', 'ProdID');
+    }
+
+    /**
+     * Pullout relationship
+     */
+    public function pullouts()
+    {
+        return $this->hasMany(Pullout::class, 'ProdID', 'ProdID');
     }
 }

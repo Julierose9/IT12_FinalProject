@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -16,39 +17,47 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        // Validate input
         $request->validate([
-            'username' => 'required|string',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        // Login using username only (no email fallback)
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password], $request->filled('remember'))) {
-            $request->session()->regenerate();
-            
-            $user = Auth::user();
+        $credentials = $request->only('email', 'password');
+        $remember = $request->boolean('remember');
 
-            // Redirect based on role
-            return $this->redirectByRole($user);
+        // Find user by email
+        $user = \App\Models\User::where('email', $credentials['email'])->first();
+
+        // Case 1: User not found
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'email' => 'The provided email does not exist.',
+            ]);
         }
 
-        throw ValidationException::withMessages([
-            'username' => 'Invalid username or password.',
-        ]);
-    }
-
-    private function redirectByRole($user)
-    {
-        switch ($user->role) {
-            case 'admin':
-                return redirect()->intended(route('admin.dashboard'));
-            case 'cashier':
-                return redirect()->intended(route('cashier.dashboard'));
-            default:
-                Auth::logout();
-                throw ValidationException::withMessages([
-                    'username' => 'Unauthorized role. Please contact administrator.',
-                ]);
+        // Case 2: Wrong password
+        if (!Hash::check($credentials['password'], $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => 'The password is incorrect.',
+            ]);
         }
+
+        // Case 3: Role check
+        if (!in_array($user->role, ['admin', 'cashier'])) {
+            throw ValidationException::withMessages([
+                'email' => 'Your account role is not authorized. Contact admin.',
+            ]);
+        }
+
+        // Case 4: Login success
+        Auth::login($user, $remember);
+        $request->session()->regenerate();
+
+        // Redirect based on role
+        return redirect()->intended(
+            $user->role === 'admin' ? route('admin.dashboard') : route('cashier.dashboard')
+        );
     }
 
     public function logout(Request $request)
@@ -57,6 +66,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('status', 'You have been logged out successfully.');
+        return redirect('/login')->with('success', 'Logged out successfully.');
     }
 }

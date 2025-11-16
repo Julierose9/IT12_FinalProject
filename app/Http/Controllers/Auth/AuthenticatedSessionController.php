@@ -24,17 +24,17 @@ class LoginController extends Controller
     {
         // Validate login fields
         $credentials = $request->validate([
-            'username' => ['required', 'string'],
+            'email' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
 
         // Debug: Check if user exists
-        $user = \App\Models\User::where('username', $credentials['username'])->first();
+        $user = \App\Models\User::where('email', $credentials['email'])->first();
         
         if (!$user) {
             return back()->withErrors([
-                'username' => 'Username not found.',
-            ])->onlyInput('username');
+                'email' => 'Email not found.',
+            ])->onlyInput('email');
         }
 
         // Debug: Check password manually
@@ -62,14 +62,14 @@ class LoginController extends Controller
             // If role doesn't match any defined type
             Auth::logout();
             return redirect()->route('login')->withErrors([
-                'username' => 'Unauthorized role. Please contact admin.',
+                'email' => 'Unauthorized role. Please contact admin.',
             ]);
         }
 
         // Invalid credentials
         return back()->withErrors([
-            'username' => 'Authentication failed.',
-        ])->onlyInput('username');
+            'email' => 'Authentication failed.',
+        ])->onlyInput('email');
     }
 
     /**

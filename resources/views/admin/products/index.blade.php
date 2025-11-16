@@ -115,21 +115,7 @@
       font-weight: 500;
     }
     
-    .status-good {
-      background: #e9fbf1;
-      color: #23b07a;
-    }
     
-    .status-damaged {
-      background: #fff0f0;
-      color: #e05252;
-    }
-    
-    .status-expired {
-      background: #fff2e0;
-      color: #f08a24;
-    }
-
     /* Modal styling */
     .modal-header {
       border-bottom: 1px solid #eef2f7;
@@ -145,6 +131,13 @@
       font-weight: 600;
       color: #3b3183;
     }
+    .status-active {
+    color: #23b07a;
+}
+
+
+
+
 
     @media (max-width: 991px) {
       .sidebar { 
@@ -181,10 +174,28 @@
         <i class="bi bi-house-door-fill me-2"></i> Dashboard
       </a>
 
-      {{-- Products --}}
-      <a class="nav-link active" href="{{ route('admin.products.index') }}">
-        <i class="bi bi-box-seam me-2"></i> Products
+      {{-- Accounts --}}
+      <a class="nav-link" href="{{ route('admin.accounts.index') }}">
+        <i class="bi bi-person-badge me-2"></i> Accounts
       </a>
+
+      {{-- Records with Submenu --}}
+      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#recordsSubmenu">
+        <i class="bi bi-file-earmark-text me-2"></i> Records
+      </a>
+      <div class="collapse show" id="recordsSubmenu">
+        <div class="nav flex-column ms-3">
+          <a class="nav-link" href="{{ route('admin.records.suppliers.index') }}">
+            <i class="bi bi-truck me-2"></i> Suppliers
+          </a>
+          <a class="nav-link" href="{{ route('admin.records.employees.index') }}">
+            <i class="bi bi-people me-2"></i> Employees
+          </a>
+          <a class="nav-link active" href="{{ route('admin.records.products.index') }}">
+            <i class="bi bi-box-seam me-2"></i> Products
+          </a>
+        </div>
+      </div>
 
       {{-- Transactions Dropdown --}}
       <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#transactionsSubmenu">
@@ -193,36 +204,16 @@
       <div class="collapse" id="transactionsSubmenu">
         <div class="nav flex-column ms-3">
           {{-- Stock In --}}
-          <a class="nav-link" href="{{ route('admin.stock-in.index') }}">
+          <a class="nav-link" href="{{ route('admin.transactions.stock-in.index') }}">
             <i class="bi bi-arrow-down-circle me-2"></i> Stock In
           </a>
 
           {{-- Pullouts --}}
-          <a class="nav-link" href="{{ route('admin.pullouts.index') }}">
+          <a class="nav-link" href="{{ route('admin.transactions.pullouts.index') }}">
             <i class="bi bi-arrow-up-circle me-2"></i> Pullouts
           </a>
         </div>
       </div>
-
-      {{-- Suppliers --}}
-      <a class="nav-link" href="{{ route('admin.suppliers.index') }}">
-        <i class="bi bi-truck me-2"></i> Suppliers
-      </a>
-
-      {{-- Employees --}}
-      <a class="nav-link" href="{{ route('admin.employees.index') }}">
-        <i class="bi bi-people me-2"></i> Employees
-      </a>
-
-      {{-- Accounts --}}
-      <a class="nav-link" href="{{ route('admin.accounts.index') }}">
-        <i class="bi bi-person-badge me-2"></i> Accounts
-      </a>
-
-      {{-- Records --}}
-      <a class="nav-link" href="{{ route('admin.records.index') }}">
-        <i class="bi bi-archive me-2"></i> Records
-      </a>
 
       {{-- Reports with Submenu --}}
       <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#reportsSubmenu">
@@ -230,25 +221,14 @@
       </a>
       <div class="collapse" id="reportsSubmenu">
         <div class="nav flex-column ms-3">
-          <a class="nav-link" href="{{ route('admin.reports.analytics') }}">
-            <i class="bi bi-graph-up me-2"></i> Analytics
-          </a>
-          <a class="nav-link" href="{{ route('admin.reports.daily-sales') }}">
-            <i class="bi bi-calendar-day me-2"></i> Daily Sales
+          <a class="nav-link" href="{{ route('admin.reports.transaction') }}">
+            <i class="bi bi-file-earmark-arrow-down"></i> Transaction 
           </a>
           <a class="nav-link" href="{{ route('admin.reports.inventory') }}">
             <i class="bi bi-clipboard-data me-2"></i> Inventory
           </a>
-          <a class="nav-link" href="{{ route('admin.reports.pullouts') }}">
-            <i class="bi bi-box-arrow-up me-2"></i> Pullouts
-          </a>
         </div>
       </div>
-
-      {{-- Settings --}}
-      <a class="nav-link" href="{{ route('admin.settings.index') }}">
-        <i class="bi bi-gear me-2"></i> Settings
-      </a>
     </nav>
   </div>
 
@@ -257,7 +237,8 @@
     <form method="POST" action="{{ route('logout') }}">
       @csrf
       <button class="btn btn-outline-secondary btn-sm w-100">
-        <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+        <i class="bi bi-b
+        ox-arrow-right me-1"></i> Sign Out
       </button>
     </form>
   </div>
@@ -287,65 +268,7 @@
       </div>
     </div>
 
-    {{-- Quick Stats --}}
-    <div class="row g-3 mb-4">
-      <div class="col-md-3">
-        <div class="card p-3 stat-card">
-          <div class="d-flex align-items-center">
-            <div class="stat-icon me-3" style="background:#f3d6ff;">
-              <i class="bi bi-box-seam" style="color:#5a3e6b;"></i>
-            </div>
-            <div>
-              <small class="text-muted">Total Products</small>
-              <div style="font-weight:700; font-size:20px">{{ $totalProducts ?? '0' }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="card p-3 stat-card">
-          <div class="d-flex align-items-center">
-            <div class="stat-icon me-3" style="background:#e9fbf1;">
-              <i class="bi bi-check-circle" style="color:#23b07a;"></i>
-            </div>
-            <div>
-              <small class="text-muted">Active Products</small>
-              <div style="font-weight:700; font-size:20px">{{ $activeProducts ?? '0' }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="card p-3 stat-card">
-          <div class="d-flex align-items-center">
-            <div class="stat-icon me-3" style="background:#fff0f0;">
-              <i class="bi bi-exclamation-triangle" style="color:#e05252;"></i>
-            </div>
-            <div>
-              <small class="text-muted">Low Stock</small>
-              <div style="font-weight:700; font-size:20px">{{ $lowStockProducts ?? '0' }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="card p-3 stat-card">
-          <div class="d-flex align-items-center">
-            <div class="stat-icon me-3" style="background:#fff2e0;">
-              <i class="bi bi-tags" style="color:#f08a24;"></i>
-            </div>
-            <div>
-              <small class="text-muted">Categories</small>
-              <div style="font-weight:700; font-size:20px">{{ $totalCategories ?? '0' }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    
     {{-- Products Table --}}
     <div class="card table-card">
       <div class="card-body">
@@ -378,9 +301,7 @@
                 </td>
                 <td>
                   <div class="d-flex align-items-center">
-                    <div class="bg-light rounded p-2 me-3">
-                      <i class="bi bi-box text-muted"></i>
-                    </div>
+                    
                     <div>
                       <div style="font-weight:600">{{ $product->ProdName }}</div>
                       <small class="text-muted">{{ Str::limit($product->ProdDescription, 30) }}</small>
@@ -400,14 +321,23 @@
                   <small class="text-muted">{{ $product->supplier->SupName ?? 'N/A' }}</small>
                 </td>
                 <td>
-                  @if(($product->current_stock ?? 0) <= $product->ReorderLvl)
-                    <span class="status-badge status-low">Low Stock</span>
-                  @elseif($product->Status === 'Active')
-                    <span class="status-badge status-active">Active</span>
-                  @else
-                    <span class="status-badge status-inactive">Inactive</span>
-                  @endif
-                </td>
+  @php
+    $stock = $product->current_stock ?? 0;
+  @endphp
+
+  @if($stock <= 0)
+    <span class="status-badge status-out">Out of Stock</span>
+
+  @elseif($stock <= $product->ReorderLvl)
+    <span class="status-badge status-low">Low Stock</span>
+
+  @elseif($product->Status === 'Inactive')
+    <span class="status-badge status-inactive">Inactive</span>
+
+  @else
+    <span class="status-badge status-active">Active</span>
+  @endif
+</td>
                 <td>
                   <div class="btn-group">
                     <button class="btn btn-sm btn-outline-primary">
@@ -521,7 +451,7 @@
           <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="{{ route('admin.products.store') }}" method="POST">
+        <form action="{{ route('admin.records.products.store') }}" method="POST">
           @csrf
           <div class="modal-body">
             <div class="row">
