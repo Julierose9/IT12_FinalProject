@@ -19,11 +19,6 @@ use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Cashier\PaymentController;
 use App\Http\Controllers\Cashier\DailySalesController;
 
-
-
-
-
-
 // Public Routes
 Route::get('/', fn() => redirect()->route('login'));
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -36,6 +31,7 @@ Route::post('/register', [RegisterController::class, 'register']);
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
 
+    // ====================== ADMIN ROUTES ======================
     Route::prefix('admin')->name('admin.')->group(function () {
 
         // Dashboard
@@ -44,26 +40,30 @@ Route::middleware('auth')->group(function () {
         // Accounts
         Route::prefix('accounts')->name('accounts.')->group(function () {
             Route::get('/', [AccountController::class, 'index'])->name('index');
-            Route::post('/store', [AccountController::class, 'store'])->name('store');
+            Route::get('/create', [AccountController::class, 'create'])->name('create');
+            Route::post('/', [AccountController::class, 'store'])->name('store');
+            Route::get('/{account}', [AccountController::class, 'show'])->name('show');
+            Route::get('/{account}/edit', [AccountController::class, 'edit'])->name('edit');
+            Route::put('/{account}', [AccountController::class, 'update'])->name('update');
+            Route::delete('/{account}', [AccountController::class, 'destroy'])->name('destroy');
+            Route::post('/{account}/reset-password', [AccountController::class, 'resetPassword'])->name('reset-password');
         });
 
         // ====================== RECORDS ======================
         Route::prefix('records')->name('records.')->group(function () {
 
             // Suppliers Routes
-Route::prefix('suppliers')->name('suppliers.')->group(function () {
-    Route::get('/', [SupplierController::class, 'index'])->name('index');
-    Route::get('/create', [SupplierController::class, 'create'])->name('create');
-    Route::post('/', [SupplierController::class, 'store'])->name('store');
-    Route::get('/{supplier}', [SupplierController::class, 'show'])->name('show');
-    Route::get('/{supplier}/edit', [SupplierController::class, 'edit'])->name('edit');
-    Route::put('/{supplier}', [SupplierController::class, 'update'])->name('update');
-    Route::delete('/{supplier}', [SupplierController::class, 'destroy'])->name('destroy');
-});
+            Route::prefix('suppliers')->name('suppliers.')->group(function () {
+                Route::get('/', [SupplierController::class, 'index'])->name('index');
+                Route::get('/create', [SupplierController::class, 'create'])->name('create');
+                Route::post('/', [SupplierController::class, 'store'])->name('store');
+                Route::get('/{supplier}', [SupplierController::class, 'show'])->name('show');
+                Route::get('/{supplier}/edit', [SupplierController::class, 'edit'])->name('edit');
+                Route::put('/{supplier}', [SupplierController::class, 'update'])->name('update');
+                Route::delete('/{supplier}', [SupplierController::class, 'destroy'])->name('destroy');
+            });
 
-            // --- EMPLOYEES ---
-
-
+            // Employees Routes
             Route::prefix('employees')->name('employees.')->group(function () {
                 Route::get('/', [EmployeeController::class, 'index'])->name('index');
                 Route::get('/create', [EmployeeController::class, 'create'])->name('create');
@@ -73,12 +73,8 @@ Route::prefix('suppliers')->name('suppliers.')->group(function () {
                 Route::put('/{employee}', [EmployeeController::class, 'update'])->name('update');
                 Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
             });
-            
-            
-            
-            
 
-            // --- PRODUCTS ---
+            // Products Routes
             Route::prefix('products')->name('products.')->group(function () {
                 Route::get('/', [ProductController::class, 'index'])->name('index');
                 Route::get('/create', [ProductController::class, 'create'])->name('create');
@@ -93,12 +89,18 @@ Route::prefix('suppliers')->name('suppliers.')->group(function () {
         // ====================== TRANSACTIONS ======================
         Route::prefix('transactions')->name('transactions.')->group(function () {
 
+            // Stock In Routes
             Route::prefix('stock-in')->name('stock-in.')->group(function () {
                 Route::get('/', [StockInController::class, 'index'])->name('index');
                 Route::get('/create', [StockInController::class, 'create'])->name('create');
                 Route::post('/', [StockInController::class, 'store'])->name('store');
+                Route::get('/{stockIn}', [StockInController::class, 'show'])->name('show');
+                Route::get('/{stockIn}/edit', [StockInController::class, 'edit'])->name('edit');
+                Route::put('/{stockIn}', [StockInController::class, 'update'])->name('update');
+                Route::delete('/{stockIn}', [StockInController::class, 'destroy'])->name('destroy');
             });
 
+            // Pullouts Routes
             Route::prefix('pullouts')->name('pullouts.')->group(function () {
                 Route::get('/', [PullOutController::class, 'index'])->name('index');
                 Route::get('/create', [PullOutController::class, 'create'])->name('create');
@@ -113,8 +115,11 @@ Route::prefix('suppliers')->name('suppliers.')->group(function () {
         // ====================== REPORTS ======================
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/daily-sales', fn() => view('admin.reports.daily-sales'))->name('daily-sales');
-            Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');            
-            Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory');        });
+            Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');
+            Route::get('/payment-summary', fn() => view('admin.reports.payment-summary'))->name('payment-summary');
+            Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory');
+            Route::get('/pullouts', fn() => view('admin.reports.pullouts'))->name('pullouts');
+        });
 
         // ====================== SETTINGS ======================
         Route::prefix('settings')->name('settings.')->group(function () {
@@ -122,10 +127,13 @@ Route::prefix('suppliers')->name('suppliers.')->group(function () {
         });
     });
 
-    // ====================== CASHIER ======================
+    // ====================== CASHIER ROUTES ======================
     Route::prefix('cashier')->name('cashier.')->group(function () {
+        
+        // Dashboard
         Route::get('/dashboard', [CashierDashboardController::class, 'index'])->name('dashboard');
 
+        // Orders Routes
         Route::prefix('orders')->name('orders.')->group(function () {
             Route::get('/', [CashierOrderController::class, 'index'])->name('index');
             Route::get('/create', [CashierOrderController::class, 'create'])->name('create');
@@ -137,28 +145,35 @@ Route::prefix('suppliers')->name('suppliers.')->group(function () {
             Route::post('/{order}/update-status', [CashierOrderController::class, 'updateStatus'])->name('update-status');
         });
 
+        // Payments Routes
         Route::prefix('payments')->name('payments.')->group(function () {
-            Route::get('/', [PaymentController::class, 'index'])->name('index');
-            Route::get('/create', [PaymentController::class, 'create'])->name('create');
-            Route::post('/', [PaymentController::class, 'store'])->name('store');
-            Route::get('/{payment}', [PaymentController::class, 'show'])->name('show');
-            Route::put('/{payment}', [PaymentController::class, 'update'])->name('update');
-            Route::post('/{payment}/refund', [PaymentController::class, 'refund'])->name('refund');
+            Route::get('/', [CashierPaymentController::class, 'index'])->name('index');
+            Route::get('/create', [CashierPaymentController::class, 'create'])->name('create');
+            Route::post('/', [CashierPaymentController::class, 'store'])->name('store');
+            Route::get('/{payment}', [CashierPaymentController::class, 'show'])->name('show');
+            Route::put('/{payment}', [CashierPaymentController::class, 'update'])->name('update');
+            Route::post('/{payment}/refund', [CashierPaymentController::class, 'refund'])->name('refund');
         });
 
+        // Transactions Routes
         Route::prefix('transactions')->name('transactions.')->group(function () {
             Route::get('/', [CashierTransactionController::class, 'index'])->name('index');
             Route::get('/{transaction}', [CashierTransactionController::class, 'show'])->name('show');
             Route::get('/{transaction}/receipt', [CashierTransactionController::class, 'receipt'])->name('receipt');
         });
 
+        // Reports Routes
         Route::prefix('reports')->name('reports.')->group(function () {
-                Route::get('/daily-sales', [DailySalesController::class, 'dailySales'])
-                    ->name('daily-sales');         
-        
+            Route::get('/daily-sales', [DailySalesController::class, 'dailySales'])->name('daily-sales');
+            Route::get('/transactions', fn() => view('cashier.reports.transactions'))->name('transactions');
+            Route::get('/payment-summary', fn() => view('cashier.reports.payment-summary'))->name('payment-summary');
         });
 
-       
+        // Settings Routes
+        Route::prefix('settings')->name('settings.')->group(function () {
+            Route::get('/', fn() => view('cashier.settings.index'))->name('index');
+            Route::get('/profile', fn() => view('cashier.settings.profile'))->name('profile');
+        });
     });
 });
 

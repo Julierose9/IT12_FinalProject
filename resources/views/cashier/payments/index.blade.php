@@ -27,8 +27,7 @@
     /* Payment Status Badge */
     .payment-badge { padding:6px 12px; border-radius:20px; font-size:.75rem; font-weight:500; }
     .payment-paid {  color:#23b07a; }
-    .payment-pending {  color:#f08a24; }
-    .payment-failed {  color:#e05252; }
+    .payment-cancelled {  color:#e05252; }
 
     .sidebar-nav { flex:1; overflow-y:auto; overflow-x:hidden; margin-top:18px; }
     .sidebar-nav::-webkit-scrollbar { width:4px; }

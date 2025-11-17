@@ -36,7 +36,7 @@ class PaymentController extends Controller
                 'CustomerName' => 'Ana Reyes',
                 'Amount' => 175.50,
                 'PaymentMethod' => 'Cash',
-                'Status' => 'Pending',
+                'Status' => 'Cancelled',
                 'created_at' => now(),
             ],
         ];
