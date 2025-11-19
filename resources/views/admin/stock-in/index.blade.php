@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Stock In | Dora's Oshopee</title>
 
-  <!-- Bootstrap + Icons + Poppins -->
+  <!-- Bootstrap + FontAwesome + Poppins -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -27,15 +27,39 @@
       overflow: hidden;
     }
     .brand { display:flex; align-items:center; gap:10px; margin-bottom:18px; flex-shrink: 0; }
-    .brand img { width:42px; height:auto; }
-    .sidebar .nav-link { color:#5b5f72; padding:10px 8px; border-radius:10px; }
+    .brand img { width:80px; height:auto; }
+    .sidebar .nav-link { 
+      color:#5b5f72; 
+      padding:10px 8px; 
+      border-radius:10px; 
+      font-size: 0.95rem;
+    }
     .sidebar .nav-link.active { background:#efeaff; color:#3b3183; font-weight:600; }
     .sidebar .nav-link:hover { background:#f8f9fa; }
     .content-wrap { margin-left:240px; padding:28px; }
-    .topbar { background:transparent; display:flex; gap:16px; align-items:center; justify-content:space-between; margin-bottom:22px; }
-    .search-input { max-width:520px; width:100%; }
+    .topbar { 
+      background:transparent; 
+      display:flex; 
+      gap:16px; 
+      align-items:flex-start; 
+      justify-content:space-between; 
+      margin-bottom:22px; 
+    }
+    .search-input { 
+      max-width: 400px; 
+      width: 100%; 
+      min-width: 300px;
+    }
     .stat-card { border-radius:12px; }
-    .stat-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:white; }
+    .stat-icon { 
+        width:44px; 
+        height:44px; 
+        border-radius:10px; 
+        display:flex; 
+        align-items:center; 
+        justify-content:center; 
+        flex-shrink: 0;
+    }
     
     /* Scrollable sidebar navigation */
     .sidebar-nav {
@@ -45,6 +69,7 @@
       margin-top: 18px;
     }
     
+    /* Custom scrollbar for sidebar */
     .sidebar-nav::-webkit-scrollbar {
       width: 4px;
     }
@@ -59,6 +84,11 @@
       border-radius: 10px;
     }
     
+    .sidebar-nav::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+    
+    /* Dropdown menu styling */
     .nav .nav-link.dropdown-toggle::after {
       float: right;
       margin-top: 6px;
@@ -73,14 +103,301 @@
     /* Submenu items styling */
     .nav .nav.flex-column.ms-3 .nav-link {
       padding: 8px 12px;
-      font-size: 0.875rem;
+      font-size: 0.95rem;
       border-radius: 6px;
     }
     
-    .sidebar-footer {
-      flex-shrink: 0;
-      margin-top: auto;
-      padding-top: 16px;
+    /* Updated user info styling - Picture left, text right */
+    .user-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 16px;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .user-details {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .user-name {
+      font-weight: 600;
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+    
+    .user-role {
+      color: #6c757d;
+      font-size: 0.875rem;
+      line-height: 1.2;
+    }
+    
+    .user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+    
+    /* User dropdown for sign out */
+    .user-dropdown {
+      position: relative;
+    }
+    
+    .user-dropdown-toggle {
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    
+    .user-dropdown-toggle:hover {
+      background: #f8f9fa;
+    }
+    
+    .user-dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 8px 0;
+      min-width: 150px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 1000;
+      margin-top: 8px;
+      display: none;
+    }
+    
+    .user-dropdown-item {
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #5b5f72;
+      text-decoration: none;
+      transition: background 0.2s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+    }
+    
+    .user-dropdown-item:hover {
+      background: #f8f9fa;
+      color: #3b3183;
+    }
+    
+    /* Search and filter section */
+    .search-filter-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    /* Filter dropdown styling */
+    .filter-dropdown {
+      position: relative;
+    }
+    
+    .filter-toggle {
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #5b5f72;
+      transition: all 0.2s;
+      cursor: pointer;
+      min-width: 100px;
+    }
+    
+    .filter-toggle:hover {
+      background: #f8f9fa;
+      border-color: #c1c1c1;
+    }
+    
+    .filter-toggle.active {
+      background: #3b3183;
+      color: white;
+      border-color: #3b3183;
+    }
+    
+    .filter-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 16px;
+      min-width: 220px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 1000;
+      margin-top: 8px;
+      display: none;
+    }
+    
+    .filter-section {
+      margin-bottom: 16px;
+    }
+    
+    .filter-section:last-child {
+      margin-bottom: 0;
+    }
+    
+    .filter-section-title {
+      font-weight: 600;
+      font-size: 0.875rem;
+      margin-bottom: 8px;
+      color: #3b3183;
+    }
+    
+    .filter-options {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .filter-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      cursor: pointer;
+    }
+    
+    .filter-option input[type="checkbox"],
+    .filter-option input[type="radio"] {
+      margin: 0;
+    }
+    
+    .filter-option label {
+      cursor: pointer;
+      font-size: 0.875rem;
+      margin: 0;
+    }
+    
+    .date-inputs {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    
+    .date-input {
+      flex: 1;
+    }
+    
+    .date-input input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+    
+    .filter-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #eef2f7;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+    }
+
+    .btn-apply, .btn-clear {
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-apply {
+      background: #3b3183;
+      color: white;
+    }
+
+    .btn-apply:hover {
+      background: #2a2265;
+    }
+
+    .btn-clear {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-clear:hover {
+      background: #5a6268;
+    }
+
+    /* Active filter indicator */
+    .active-filters {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      width: 100%;
+      justify-content: flex-end;
+    }
+    
+    .active-filters.has-filters {
+      display: flex;
+    }
+    
+    .filter-tag {
+      background: #e9ecef;
+      border: 1px solid #dee2e6;
+      border-radius: 16px;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .filter-tag-remove {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #6c757d;
+      padding: 0;
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Container for search/filter and active filters */
+    .filter-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      margin-top: 20px;
     }
 
     /* Table styling */
@@ -153,6 +470,49 @@
         overflow:auto; 
       }
       .content-wrap { margin-left:0; padding:16px; }
+      
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+      }
+      
+      .user-section {
+        align-items: stretch;
+      }
+      
+      .search-filter-section {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .search-input {
+        min-width: 250px;
+        max-width: 100%;
+      }
+      
+      .filter-menu {
+        right: auto;
+        left: 0;
+        min-width: 220px;
+      }
+      
+      .filter-toggle {
+        min-width: 90px;
+      }
+      
+      .user-dropdown-menu {
+        right: auto;
+        left: 0;
+      }
+      
+      .filter-container {
+        align-items: stretch;
+      }
+      
+      .active-filters {
+        justify-content: flex-start;
+      }
     }
   </style>
 </head>
@@ -163,7 +523,7 @@
   <div class="brand">
     <img src="{{ asset('images/logo_.png') }}" alt="Logo">
     <div>
-      <div style="font-weight:600">Dora's</div>
+      <div style="font-weight:600">Dora's Oshoppe</div>
       <small class="text-muted">Gift Shop</small>
     </div>
   </div>
@@ -173,78 +533,68 @@
     <nav class="nav flex-column">
       {{-- Dashboard --}}
       <a class="nav-link" href="{{ route('admin.dashboard') }}">
-        <i class="bi bi-house-door-fill me-2"></i> Dashboard
+        <i class="fas fa-home me-2"></i> Dashboard
       </a>
 
       {{-- Accounts --}}
       <a class="nav-link" href="{{ route('admin.accounts.index') }}">
-        <i class="bi bi-person-badge me-2"></i> Accounts
+        <i class="fas fa-user-circle me-2"></i> Accounts
       </a>
 
       {{-- Records with Submenu --}}
       <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#recordsSubmenu">
-        <i class="bi bi-file-earmark-text me-2"></i> Records
+        <i class="fas fa-archive me-2"></i> Records
       </a>
       <div class="collapse" id="recordsSubmenu">
         <div class="nav flex-column ms-3">
           <a class="nav-link" href="{{ route('admin.records.suppliers.index') }}">
-            <i class="bi bi-truck me-2"></i> Suppliers
+            <i class="fas fa-truck me-2"></i> Suppliers
           </a>
           <a class="nav-link" href="{{ route('admin.records.employees.index') }}">
-            <i class="bi bi-people me-2"></i> Employees
+            <i class="fas fa-users me-2"></i> Employees
           </a>
           <a class="nav-link" href="{{ route('admin.records.products.index') }}">
-            <i class="bi bi-box-seam me-2"></i> Products
+            <i class="fas fa-box me-2"></i> Products
           </a>
         </div>
       </div>
 
       {{-- Transactions Dropdown --}}
-      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#transactionsSubmenu">
-        <i class="bi bi-arrow-left-right me-2"></i> Transactions
+      <a class="nav-link dropdown-toggle active" href="#" data-bs-toggle="collapse" data-bs-target="#transactionsSubmenu">
+        <i class="fas fa-exchange-alt me-2"></i> Transactions
       </a>
       <div class="collapse show" id="transactionsSubmenu">
         <div class="nav flex-column ms-3">
           {{-- Stock In --}}
           <a class="nav-link active" href="{{ route('admin.transactions.stock-in.index') }}">
-            <i class="bi bi-arrow-down-circle me-2"></i> Stock In
+            <i class="fas fa-arrow-circle-down me-2"></i> Stock In
           </a>
 
           {{-- Pullouts --}}
           <a class="nav-link" href="{{ route('admin.transactions.pullouts.index') }}">
-            <i class="bi bi-arrow-up-circle me-2"></i> Pullouts
+            <i class="fas fa-arrow-circle-up me-2"></i> Pullouts
           </a>
         </div>
       </div>
 
       {{-- Reports with Submenu --}}
       <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#reportsSubmenu">
-        <i class="bi bi-file-earmark-text me-2"></i> Reports
+        <i class="fas fa-chart-bar me-2"></i> Reports
       </a>
       <div class="collapse" id="reportsSubmenu">
         <div class="nav flex-column ms-3">
           <a class="nav-link" href="{{ route('admin.reports.transaction') }}">
-            <i class="bi bi-file-earmark-arrow-down"></i> Transaction 
+            <i class="fas fa-file-invoice-dollar me-2"></i> Transaction 
           </a>
           <a class="nav-link" href="{{ route('admin.reports.inventory') }}">
-            <i class="bi bi-clipboard-data me-2"></i> Inventory
+            <i class="fas fa-clipboard-list me-2"></i> Inventory
           </a>
         </div>
       </div>
     </nav>
   </div>
-
-  {{-- Fixed Footer with Logout --}}
-  <div class="sidebar-footer">
-    <form method="POST" action="{{ route('logout') }}">
-      @csrf
-      <button class="btn btn-outline-secondary btn-sm w-100">
-        <i class="bi bi-b
-        ox-arrow-right me-1"></i> Sign Out
-      </button>
-    </form>
-  </div>
 </aside>
+
   {{-- Content --}}
   <main class="content-wrap">
     {{-- Topbar --}}
@@ -254,23 +604,139 @@
         <small class="text-muted">Received Items Tracking</small>
       </div>
 
-      <div class="d-flex align-items-center gap-3">
-        <div class="input-group search-input">
-          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-          <input class="form-control" placeholder="Search stock in records..." />
-        </div>
-
-        <div class="d-flex align-items-center gap-3">
-          <div class="text-end me-2">
-            <div style="font-weight:600">{{ Auth::user()->name ?? 'Admin' }}</div>
-            <small class="text-muted">Administrator</small>
+      <div class="user-section">
+        <!-- User Info Section with Dropdown -->
+        <div class="user-dropdown">
+          <button class="user-dropdown-toggle" id="userDropdownToggle">
+            <img src="{{ asset('images/logo_.png') }}" alt="avatar" class="user-avatar">
+            <div class="user-details">
+              <div class="user-name">Dora</div>
+              <div class="user-role">Administrator</div>
+            </div>
+            <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
+          </button>
+          
+          <div class="user-dropdown-menu" id="userDropdownMenu">
+            <form method="POST" action="{{ route('logout') }}">
+              @csrf
+              <button type="submit" class="user-dropdown-item">
+                <i class="fas fa-sign-out-alt me-2"></i> Sign Out
+              </button>
+            </form>
           </div>
-          <img src="{{ asset('images/logo_.png') }}" alt="avatar" style="width:44px; border-radius:10px;">
+        </div>
+        
+        <!-- Filter Container with Search/Filter and Active Filters -->
+        <div class="filter-container">
+          <!-- Search and Filter Section -->
+          <div class="search-filter-section">
+            <!-- Expanded Search Bar -->
+            <div class="input-group search-input">
+              <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+              <input class="form-control" placeholder="Search stock in records..." />
+            </div>
+            
+            <!-- Relevant Filter Dropdown -->
+            <div class="filter-dropdown">
+              <button class="filter-toggle" id="filterToggle">
+                <i class="fas fa-filter"></i>
+                <i class="fas fa-chevron-down ms-1" style="font-size: 0.8rem;"></i>
+              </button>
+              
+              <div class="filter-menu" id="filterMenu" style="display: none;">
+                <!-- Product Status Filter -->
+                <div class="filter-section">
+                  <div class="filter-section-title">Product Status</div>
+                  <div class="filter-options">
+                    <div class="filter-option">
+                      <input type="checkbox" id="status-all" checked>
+                      <label for="status-all">All Status</label>
+                    </div>
+                    <div class="filter-option">
+                      <input type="checkbox" id="status-good">
+                      <label for="status-good">Good</label>
+                    </div>
+                    <div class="filter-option">
+                      <input type="checkbox" id="status-damaged">
+                      <label for="status-damaged">Damaged</label>
+                    </div>
+                    <div class="filter-option">
+                      <input type="checkbox" id="status-expired">
+                      <label for="status-expired">Expired</label>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Supplier Filter -->
+                <div class="filter-section">
+                  <div class="filter-section-title">Supplier</div>
+                  <div class="filter-options">
+                    <div class="filter-option">
+                      <input type="radio" name="supplier" id="supplier-all" checked>
+                      <label for="supplier-all">All Suppliers</label>
+                    </div>
+                    <div class="filter-option">
+                      <input type="radio" name="supplier" id="supplier-beauty">
+                      <label for="supplier-beauty">Beauty Supplies Co.</label>
+                    </div>
+                    <div class="filter-option">
+                      <input type="radio" name="supplier" id="supplier-fashion">
+                      <label for="supplier-fashion">Fashion Trends Inc.</label>
+                    </div>
+                    <div class="filter-option">
+                      <input type="radio" name="supplier" id="supplier-craft">
+                      <label for="supplier-craft">Craft Materials Ltd.</label>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Date Received Filter -->
+                <div class="filter-section">
+                  <div class="filter-section-title">Date Received</div>
+                  <div class="filter-options">
+                    <div class="filter-option">
+                      <input type="radio" name="dateReceived" id="date-all" checked>
+                      <label for="date-all">All Time</label>
+                    </div>
+                    <div class="filter-option">
+                      <input type="radio" name="dateReceived" id="date-today">
+                      <label for="date-today">Today</label>
+                    </div>
+                    <div class="filter-option">
+                      <input type="radio" name="dateReceived" id="date-week">
+                      <label for="date-week">This Week</label>
+                    </div>
+                    <div class="filter-option">
+                      <input type="radio" name="dateReceived" id="date-custom">
+                      <label for="date-custom">Custom Range</label>
+                    </div>
+                  </div>
+                  <div class="date-inputs" id="customDateRange" style="display: none;">
+                    <div class="date-input">
+                      <input type="date" id="dateFrom" placeholder="From Date">
+                    </div>
+                    <div class="date-input">
+                      <input type="date" id="dateTo" placeholder="To Date">
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="filter-actions">
+                  <button class="btn-apply" id="applyFilters">Apply Filters</button>
+                  <button class="btn-clear" id="clearFilters">Reset Filters</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Active Filters Display -->
+          <div class="active-filters" id="activeFilters">
+            <!-- Filter tags will be dynamically added here -->
+          </div>
         </div>
       </div>
     </div>
-
- 
 
     {{-- Stock In Table --}}
     <div class="card table-card">
@@ -278,7 +744,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h5 class="card-title mb-0">Stock In Records</h5>
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStockInModal">
-            <i class="bi bi-plus-circle me-2"></i>New Stock In
+            <i class="fas fa-plus-circle me-2"></i>New Stock In
           </button>
         </div>
 
@@ -303,7 +769,6 @@
                 </td>
                 <td>
                   <div class="d-flex align-items-center">
-                    
                     <div>
                       <div style="font-weight:600">{{ $stockIn->product->ProdName ?? 'N/A' }}</div>
                       <small class="text-muted">{{ $stockIn->product->ProdID ?? '' }}</small>
@@ -331,10 +796,10 @@
                 <td>
                   <div class="btn-group">
                     <button class="btn btn-sm btn-outline-primary">
-                      <i class="bi bi-eye"></i>
+                      <i class="fas fa-eye"></i>
                     </button>
                     <button class="btn btn-sm btn-outline-danger">
-                      <i class="bi bi-trash"></i>
+                      <i class="fas fa-trash"></i>
                     </button>
                   </div>
                 </td>
@@ -429,6 +894,266 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // Filter functionality
+    const filterToggle = document.getElementById('filterToggle');
+    const filterMenu = document.getElementById('filterMenu');
+    const activeFilters = document.getElementById('activeFilters');
+    const customDateRange = document.getElementById('customDateRange');
+    
+    // User dropdown functionality
+    const userDropdownToggle = document.getElementById('userDropdownToggle');
+    const userDropdownMenu = document.getElementById('userDropdownMenu');
+    
+    // Store current filters
+    let currentFilters = {
+      productStatus: ['All Status'],
+      supplier: 'All Suppliers',
+      dateReceived: 'All Time'
+    };
+    
+    // Filter toggle
+    filterToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isVisible = filterMenu.style.display === 'block';
+      filterMenu.style.display = isVisible ? 'none' : 'block';
+      filterToggle.classList.toggle('active', !isVisible);
+    });
+    
+    // User dropdown toggle
+    userDropdownToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isVisible = userDropdownMenu.style.display === 'block';
+      userDropdownMenu.style.display = isVisible ? 'none' : 'block';
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function() {
+      filterMenu.style.display = 'none';
+      filterToggle.classList.remove('active');
+      userDropdownMenu.style.display = 'none';
+    });
+    
+    // Prevent closing when clicking inside the filter menu
+    filterMenu.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+    
+    // Prevent closing when clicking inside the user dropdown
+    userDropdownMenu.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+    
+    // Show/hide custom date range
+    document.querySelectorAll('input[name="dateReceived"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        if (this.id === 'date-custom') {
+          customDateRange.style.display = 'flex';
+        } else {
+          customDateRange.style.display = 'none';
+        }
+      });
+    });
+    
+    // Apply filters
+    document.getElementById('applyFilters').addEventListener('click', function() {
+      filterMenu.style.display = 'none';
+      filterToggle.classList.remove('active');
+      
+      // Update current filters based on selections
+      updateCurrentFilters();
+      
+      // Update active filters display
+      updateActiveFilters();
+      
+      // Here you would typically refresh stock in data based on filters
+      console.log('Filters applied - refreshing stock in data...');
+    });
+    
+    // Clear filters
+    document.getElementById('clearFilters').addEventListener('click', function() {
+      // Clear all checkboxes and radios
+      document.querySelectorAll('.filter-option input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+      });
+      
+      // Set default values
+      document.getElementById('status-all').checked = true;
+      document.getElementById('supplier-all').checked = true;
+      document.getElementById('date-all').checked = true;
+      
+      // Hide custom date range
+      customDateRange.style.display = 'none';
+      
+      // Update current filters to defaults
+      currentFilters = {
+        productStatus: ['All Status'],
+        supplier: 'All Suppliers',
+        dateReceived: 'All Time'
+      };
+      
+      // Update active filters
+      updateActiveFilters();
+    });
+    
+    function updateCurrentFilters() {
+      // Update product status
+      currentFilters.productStatus = [];
+      if (document.getElementById('status-all').checked) {
+        currentFilters.productStatus.push('All Status');
+      } else {
+        if (document.getElementById('status-good').checked) {
+          currentFilters.productStatus.push('Good');
+        }
+        if (document.getElementById('status-damaged').checked) {
+          currentFilters.productStatus.push('Damaged');
+        }
+        if (document.getElementById('status-expired').checked) {
+          currentFilters.productStatus.push('Expired');
+        }
+      }
+      
+      // Update supplier
+      if (document.getElementById('supplier-all').checked) {
+        currentFilters.supplier = 'All Suppliers';
+      } else if (document.getElementById('supplier-beauty').checked) {
+        currentFilters.supplier = 'Beauty Supplies Co.';
+      } else if (document.getElementById('supplier-fashion').checked) {
+        currentFilters.supplier = 'Fashion Trends Inc.';
+      } else if (document.getElementById('supplier-craft').checked) {
+        currentFilters.supplier = 'Craft Materials Ltd.';
+      }
+      
+      // Update date received
+      if (document.getElementById('date-all').checked) {
+        currentFilters.dateReceived = 'All Time';
+      } else if (document.getElementById('date-today').checked) {
+        currentFilters.dateReceived = 'Today';
+      } else if (document.getElementById('date-week').checked) {
+        currentFilters.dateReceived = 'This Week';
+      } else if (document.getElementById('date-custom').checked) {
+        const fromDate = document.getElementById('dateFrom').value;
+        const toDate = document.getElementById('dateTo').value;
+        currentFilters.dateReceived = `Custom: ${fromDate} to ${toDate}`;
+      }
+    }
+    
+    function updateActiveFilters() {
+      // Clear existing filter tags
+      activeFilters.innerHTML = '';
+      
+      // Check if we have any non-default filters
+      const hasCustomFilters = 
+        currentFilters.productStatus.length !== 1 || 
+        currentFilters.productStatus[0] !== 'All Status' ||
+        currentFilters.supplier !== 'All Suppliers' ||
+        currentFilters.dateReceived !== 'All Time';
+      
+      if (!hasCustomFilters) {
+        // No custom filters applied, hide the active filters section
+        activeFilters.classList.remove('has-filters');
+        return;
+      }
+      
+      // Show active filters section
+      activeFilters.classList.add('has-filters');
+      
+      // Add product status filter tags if not "All Status"
+      if (currentFilters.productStatus.length > 0 && 
+          (currentFilters.productStatus.length > 1 || currentFilters.productStatus[0] !== 'All Status')) {
+        currentFilters.productStatus.forEach(status => {
+          const statusTag = createFilterTag(`Status: ${status}`, `status-${status.toLowerCase()}`);
+          activeFilters.appendChild(statusTag);
+        });
+      }
+      
+      // Add supplier filter tag if not default
+      if (currentFilters.supplier !== 'All Suppliers') {
+        const supplierTag = createFilterTag(`Supplier: ${currentFilters.supplier}`, 'supplier');
+        activeFilters.appendChild(supplierTag);
+      }
+      
+      // Add date received filter tag if not default
+      if (currentFilters.dateReceived !== 'All Time') {
+        const dateTag = createFilterTag(`Date: ${currentFilters.dateReceived}`, 'dateReceived');
+        activeFilters.appendChild(dateTag);
+      }
+    }
+    
+    function createFilterTag(text, filterType) {
+      const tag = document.createElement('div');
+      tag.className = 'filter-tag';
+      
+      const span = document.createElement('span');
+      span.textContent = text;
+      
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'filter-tag-remove';
+      removeBtn.setAttribute('data-filter', filterType);
+      removeBtn.innerHTML = '×';
+      removeBtn.addEventListener('click', function() {
+        removeFilter(filterType);
+      });
+      
+      tag.appendChild(span);
+      tag.appendChild(removeBtn);
+      
+      return tag;
+    }
+    
+    function removeFilter(filterType) {
+      // Remove the specific filter and update the UI
+      if (filterType.startsWith('status-')) {
+        const filterName = filterType.replace('status-', '');
+        const index = currentFilters.productStatus.indexOf(
+          filterName.charAt(0).toUpperCase() + filterName.slice(1)
+        );
+        if (index > -1) {
+          currentFilters.productStatus.splice(index, 1);
+        }
+      } else if (filterType === 'supplier') {
+        currentFilters.supplier = 'All Suppliers';
+      } else if (filterType === 'dateReceived') {
+        currentFilters.dateReceived = 'All Time';
+      }
+      
+      // Update the checkboxes/radios to reflect the change
+      updateFilterInputs();
+      
+      // Update active filters display
+      updateActiveFilters();
+      
+      // Here you would typically refresh stock in data
+      console.log('Filter removed - refreshing stock in data...');
+    }
+    
+    function updateFilterInputs() {
+      // Update product status checkboxes
+      document.getElementById('status-all').checked = currentFilters.productStatus.includes('All Status');
+      document.getElementById('status-good').checked = currentFilters.productStatus.includes('Good');
+      document.getElementById('status-damaged').checked = currentFilters.productStatus.includes('Damaged');
+      document.getElementById('status-expired').checked = currentFilters.productStatus.includes('Expired');
+      
+      // Update supplier radio
+      if (currentFilters.supplier === 'All Suppliers') {
+        document.getElementById('supplier-all').checked = true;
+      } else if (currentFilters.supplier === 'Beauty Supplies Co.') {
+        document.getElementById('supplier-beauty').checked = true;
+      } else if (currentFilters.supplier === 'Fashion Trends Inc.') {
+        document.getElementById('supplier-fashion').checked = true;
+      } else if (currentFilters.supplier === 'Craft Materials Ltd.') {
+        document.getElementById('supplier-craft').checked = true;
+      }
+      
+      // Update date received radio
+      if (currentFilters.dateReceived === 'All Time') {
+        document.getElementById('date-all').checked = true;
+      } else if (currentFilters.dateReceived === 'Today') {
+        document.getElementById('date-today').checked = true;
+      } else if (currentFilters.dateReceived === 'This Week') {
+        document.getElementById('date-week').checked = true;
+      }
+    }
+    
     // Initialize Bootstrap collapse for submenus
     var transactionsCollapse = new bootstrap.Collapse(document.getElementById('transactionsSubmenu'), {
       toggle: false
