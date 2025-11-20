@@ -575,7 +575,7 @@
 
       {{-- Transactions Dropdown --}}
       <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#transactionsSubmenu">
-        <i class="fas fa-exchange-alt me-2"></i> Transactions
+        <i class="fas fa-exchange-alt me-2"></i> Inventory
       </a>
       <div class="collapse" id="transactionsSubmenu">
         <div class="nav flex-column ms-3">
