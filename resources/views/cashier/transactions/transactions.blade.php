@@ -5,21 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Transaction History | Dora's Oshopee</title>
 
+  <!-- Bootstrap + FontAwesome + Poppins -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     body { font-family: 'Poppins', sans-serif; background:#f5f7fb; }
-    .sidebar { min-width:220px; max-width:220px; background:#fff; border-right:1px solid #eef2f7; height:100vh; position:fixed; top:0; left:0; padding:22px; display:flex; flex-direction:column; overflow:hidden; }
-    .brand { display:flex; align-items:center; gap:10px; margin-bottom:18px; flex-shrink:0; }
-    .brand img { width:42px; height:auto; }
-    .sidebar .nav-link { color:#5b5f72; padding:10px 8px; border-radius:10px; }
+    .sidebar { 
+      min-width: 220px; 
+      max-width: 220px; 
+      background: #fff; 
+      border-right:1px solid #eef2f7; 
+      height:100vh; 
+      position:fixed; 
+      top:0; 
+      left:0; 
+      padding:22px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .brand { display:flex; align-items:center; gap:10px; margin-bottom:18px; flex-shrink: 0; }
+    .brand img { width:80px; height:auto; }
+    .sidebar .nav-link { 
+      color:#5b5f72; 
+      padding:10px 8px; 
+      border-radius:10px; 
+      font-size: 0.95rem;
+    }
     .sidebar .nav-link.active { background:#efeaff; color:#3b3183; font-weight:600; }
     .sidebar .nav-link:hover { background:#f8f9fa; }
     .content-wrap { margin-left:240px; padding:28px; }
-    .topbar { display:flex; gap:16px; align-items:center; justify-content:space-between; margin-bottom:22px; }
-    .search-input { max-width:520px; width:100%; }
+    .topbar { 
+      background:transparent; 
+      display:flex; 
+      gap:16px; 
+      align-items:flex-start; 
+      justify-content:space-between; 
+      margin-bottom:22px; 
+    }
+    .search-input { 
+      max-width: 400px; 
+      width: 100%; 
+      min-width: 300px;
+    }
     .stats-card { border-radius:12px; padding:20px; box-shadow:0 2px 4px rgba(0,0,0,0.04); background:#fff; }
     .stats-card h3 { font-size:1.75rem; font-weight:700; margin:0; }
     .stats-card small { color:#6c757d; }
@@ -45,23 +75,411 @@
     .method-gcash { color:#1a73e8; }
     .method-card { color:#f57c00; }
 
-    .sidebar-nav { flex:1; overflow-y:auto; overflow-x:hidden; margin-top:18px; }
-    .sidebar-nav::-webkit-scrollbar { width:4px; }
-    .sidebar-nav::-webkit-scrollbar-track { background:#f1f1f1; border-radius:10px; }
-    .sidebar-nav::-webkit-scrollbar-thumb { background:#c1c1c1; border-radius:10px; }
-    .nav .nav-link.dropdown-toggle::after { float:right; margin-top:6px; }
-    .nav .nav.flex-column.ms-3 { border-left:2px solid #eef2f7; margin-left:12px !important; padding-left:8px; }
-    .sidebar-footer { flex-shrink:0; margin-top:auto; padding-top:16px; }
+    /* Scrollable sidebar navigation */
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin-top: 18px;
+    }
+    
+    /* Custom scrollbar for sidebar */
+    .sidebar-nav::-webkit-scrollbar {
+      width: 4px;
+    }
+    
+    .sidebar-nav::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    
+    .sidebar-nav::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 10px;
+    }
+    
+    .sidebar-nav::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+    
+    /* Dropdown menu styling */
+    .nav .nav-link.dropdown-toggle::after {
+      float: right;
+      margin-top: 6px;
+    }
+    
+    .nav .nav.flex-column.ms-3 {
+      border-left: 2px solid #eef2f7;
+      margin-left: 12px !important;
+      padding-left: 8px;
+    }
+    
+    /* Submenu items styling */
+    .nav .nav.flex-column.ms-3 .nav-link {
+      padding: 8px 12px;
+      font-size: 0.95rem;
+      border-radius: 6px;
+    }
+    
+    /* Updated user info styling - Picture left, text right */
+    .user-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 16px;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .user-details {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .user-name {
+      font-weight: 600;
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+    
+    .user-role {
+      color: #6c757d;
+      font-size: 0.875rem;
+      line-height: 1.2;
+    }
+    
+    .user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+    
+    /* User dropdown for sign out */
+    .user-dropdown {
+      position: relative;
+    }
+    
+    .user-dropdown-toggle {
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    
+    .user-dropdown-toggle:hover {
+      background: #f8f9fa;
+    }
+    
+    .user-dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 8px 0;
+      min-width: 150px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 1000;
+      margin-top: 8px;
+      display: none;
+    }
+    
+    .user-dropdown-item {
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #5b5f72;
+      text-decoration: none;
+      transition: background 0.2s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+    }
+    
+    .user-dropdown-item:hover {
+      background: #f8f9fa;
+      color: #3b3183;
+    }
+    
+    /* Search and filter section */
+    .search-filter-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    /* Filter dropdown styling */
+    .filter-dropdown {
+      position: relative;
+    }
+    
+    .filter-toggle {
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #5b5f72;
+      transition: all 0.2s;
+      cursor: pointer;
+      min-width: 100px;
+    }
+    
+    .filter-toggle:hover {
+      background: #f8f9fa;
+      border-color: #c1c1c1;
+    }
+    
+    .filter-toggle.active {
+      background: #3b3183;
+      color: white;
+      border-color: #3b3183;
+    }
+    
+    .filter-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 16px;
+      min-width: 220px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 1000;
+      margin-top: 8px;
+      display: none;
+    }
+    
+    .filter-section {
+      margin-bottom: 16px;
+    }
+    
+    .filter-section:last-child {
+      margin-bottom: 0;
+    }
+    
+    .filter-section-title {
+      font-weight: 600;
+      font-size: 0.875rem;
+      margin-bottom: 8px;
+      color: #3b3183;
+    }
+    
+    .filter-options {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .filter-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      cursor: pointer;
+    }
+    
+    .filter-option input[type="checkbox"],
+    .filter-option input[type="radio"] {
+      margin: 0;
+    }
+    
+    .filter-option label {
+      cursor: pointer;
+      font-size: 0.875rem;
+      margin: 0;
+    }
+    
+    .date-inputs {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    
+    .date-input {
+      flex: 1;
+    }
+    
+    .date-input input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+    
+    .filter-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #eef2f7;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+    }
+
+    .btn-apply, .btn-clear {
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-apply {
+      background: #3b3183;
+      color: white;
+    }
+
+    .btn-apply:hover {
+      background: #2a2265;
+    }
+
+    .btn-clear {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-clear:hover {
+      background: #5a6268;
+    }
+
+    /* Active filter indicator */
+    .active-filters {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      width: 100%;
+      justify-content: flex-end;
+    }
+    
+    .active-filters.has-filters {
+      display: flex;
+    }
+    
+    .filter-tag {
+      background: #e9ecef;
+      border: 1px solid #dee2e6;
+      border-radius: 16px;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .filter-tag-remove {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #6c757d;
+      padding: 0;
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Container for search/filter and active filters */
+    .filter-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      margin-top: 20px;
+    }
 
     /* Filter section */
-    .filter-section { background:#f8f9fa; border-radius:10px; padding:20px; margin-bottom:20px; }
+    .filter-section-main { 
+      background:#f8f9fa; 
+      border-radius:10px; 
+      padding:20px; 
+      margin-bottom:20px; 
+    }
 
     /* Removed action buttons */
     .action-buttons { display: none; }
 
-    @media (max-width:991px) {
-      .sidebar { position:relative; width:100%; height:auto; max-height:80vh; border-right:none; padding:12px 16px; overflow:auto; }
+    @media (max-width: 991px) {
+      .sidebar { 
+        position:relative; 
+        width:100%; 
+        height:auto; 
+        max-height: 80vh;
+        border-right:none; 
+        padding:12px 16px; 
+        display:flex; 
+        overflow:auto; 
+      }
       .content-wrap { margin-left:0; padding:16px; }
+      
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+      }
+      
+      .user-section {
+        align-items: stretch;
+      }
+      
+      .search-filter-section {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .search-input {
+        min-width: 250px;
+        max-width: 100%;
+      }
+      
+      .filter-menu {
+        right: auto;
+        left: 0;
+        min-width: 220px;
+      }
+      
+      .filter-toggle {
+        min-width: 90px;
+      }
+      
+      .user-dropdown-menu {
+        right: auto;
+        left: 0;
+      }
+      
+      .filter-container {
+        align-items: stretch;
+      }
+      
+      .active-filters {
+        justify-content: flex-start;
+      }
     }
   </style>
 </head>
@@ -71,38 +489,50 @@
 <aside class="sidebar">
   <div class="brand">
     <img src="{{ asset('images/logo_.png') }}" alt="Logo">
-    <div><div style="font-weight:600">Dora's</div><small class="text-muted">Gift Shop</small></div>
+    <div>
+      <div style="font-weight:600">Dora's Oshoppe</div>
+      <small class="text-muted">Gift Shop</small>
+    </div>
   </div>
 
+  {{-- Scrollable Navigation --}}
   <div class="sidebar-nav">
     <nav class="nav flex-column">
-      <a class="nav-link" href="{{ route('cashier.dashboard') }}"><i class="bi bi-house-door-fill me-2"></i> Dashboard</a>
+      {{-- Dashboard --}}
+      <a class="nav-link" href="{{ route('cashier.dashboard') }}">
+        <i class="fas fa-home me-2"></i> Dashboard
+      </a>
 
-      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#salesSubmenu">
-        <i class="bi bi-cash-stack me-2"></i> Transactions
+      {{-- Sales & Transactions Dropdown --}}
+      <a class="nav-link dropdown-toggle active" href="#" data-bs-toggle="collapse" data-bs-target="#salesSubmenu">
+        <i class="fas fa-cash-register me-2"></i> Transactions
       </a>
       <div class="collapse show" id="salesSubmenu">
         <div class="nav flex-column ms-3">
-          <a class="nav-link" href="{{ route('cashier.sales.index') }}"><i class="bi bi-bag-check me-2"></i> Sales</a>
-          <a class="nav-link active" href="{{ route('cashier.transactions.index') }}"><i class="bi bi-clock-history me-2"></i> Transaction History</a>
+          {{-- Sales (Combined Orders & Payments) --}}
+          <a class="nav-link" href="{{ route('cashier.sales.index') }}">
+            <i class="fas fa-shopping-bag me-2"></i> Sales
+          </a>
+
+          {{-- Transactions History --}}
+          <a class="nav-link active" href="{{ route('cashier.transactions.index') }}">
+            <i class="fas fa-history me-2"></i> Transaction History
+          </a>
         </div>
       </div>
 
+      {{-- Reports with Submenu --}}
       <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#reportsSubmenu">
-        <i class="bi bi-file-earmark-text me-2"></i> Reports
+        <i class="fas fa-chart-bar me-2"></i> Reports
       </a>
       <div class="collapse" id="reportsSubmenu">
         <div class="nav flex-column ms-3">
-          <a class="nav-link" href="{{ route('cashier.reports.daily-sales') }}"><i class="bi bi-graph-up me-2"></i> Daily Sales</a>
+          <a class="nav-link" href="{{ route('cashier.reports.daily-sales') }}">
+            <i class="fas fa-chart-line me-2"></i> Daily Sales
+          </a>
         </div>
       </div>
     </nav>
-  </div>
-
-  <div class="sidebar-footer">
-    <form method="POST" action="{{ route('logout') }}">@csrf
-      <button class="btn btn-outline-secondary btn-sm w-100"><i class="bi bi-box-arrow-right me-1"></i> Sign Out</button>
-    </form>
   </div>
 </aside>
 
@@ -115,68 +545,159 @@
       <small class="text-muted">Complete order and payment records</small>
     </div>
 
-    <div class="d-flex align-items-center gap-3">
-      {{-- Search --}}
-      <form method="GET" action="{{ route('cashier.transactions.index') }}" class="d-inline">
-        <div class="input-group search-input">
-          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-          <input type="text"
-                 name="search"
-                 class="form-control"
-                 placeholder="Search transactions..."
-                 value="{{ request('search') }}" />
-        </div>
-      </form>
-
-      <div class="d-flex align-items-center gap-3">
-        <div class="text-end me-2">
-          <div style="font-weight:600">{{ Auth::user()->name ?? 'Cashier' }}</div>
-          <small class="text-muted">Cashier</small>
-        </div>
-        <img src="{{ asset('images/logo_.png') }}" alt="avatar" style="width:44px; border-radius:10px;">
-      </div>
-    </div>
-  </div>
-
-  
-  {{-- Filter Section --}}
-  <div class="filter-section">
-    <div class="row g-3">
-      <div class="col-md-3">
-        <label class="form-label">Date From</label>
-        <input type="date" class="form-control" id="dateFrom" value="2025-10-11">
-      </div>
-      <div class="col-md-3">
-        <label class="form-label">Date To</label>
-        <input type="date" class="form-control" id="dateTo" value="2025-11-17">
-      </div>
-      <div class="col-md-3">
-        <label class="form-label">Status</label>
-        <select class="form-select" id="statusFilter">
-          <option value="">All Status</option>
-          <option value="completed">Completed</option>
-          <option value="pending">Pending</option>
-          <option value="cancelled">Cancelled</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <label class="form-label">Payment Method</label>
-        <select class="form-select" id="paymentMethodFilter">
-          <option value="">All Methods</option>
-          <option value="cash">Cash</option>
-          <option value="gcash">GCash</option>
-          <option value="card">Card</option>
-        </select>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-md-12 d-flex justify-content-end gap-2">
-        <button class="btn btn-outline-secondary" id="resetFilters">
-          <i class="bi bi-arrow-clockwise me-2"></i>Reset Filters
+    <div class="user-section">
+      <!-- User Info Section with Dropdown -->
+      <div class="user-dropdown">
+        <button class="user-dropdown-toggle" id="userDropdownToggle">
+          <img src="{{ asset('images/logo_.png') }}" alt="avatar" class="user-avatar">
+          <div class="user-details">
+            <div class="user-name">{{ Auth::user()->name ?? 'Cashier' }}</div>
+            <div class="user-role">Cashier</div>
+          </div>
+          <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
         </button>
-        <button class="btn btn-primary" id="applyFilters">
-          <i class="bi bi-funnel me-2"></i>Apply Filters
-        </button>
+        
+        <div class="user-dropdown-menu" id="userDropdownMenu">
+          <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="user-dropdown-item">
+              <i class="fas fa-sign-out-alt me-2"></i> Sign Out
+            </button>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Filter Container with Search/Filter and Active Filters -->
+      <div class="filter-container">
+        <!-- Search and Filter Section -->
+        <div class="search-filter-section">
+          <!-- Expanded Search Bar -->
+          <div class="input-group search-input">
+            <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+            <input type="text"
+                   name="search"
+                   class="form-control"
+                   placeholder="Search transactions..."
+                   value="{{ request('search') }}" />
+          </div>
+          
+          <!-- Relevant Filter Dropdown -->
+          <div class="filter-dropdown">
+            <button class="filter-toggle" id="filterToggle">
+              <i class="fas fa-filter"></i>
+              <i class="fas fa-chevron-down ms-1" style="font-size: 0.8rem;"></i>
+            </button>
+            
+            <div class="filter-menu" id="filterMenu" style="display: none;">
+              <!-- Time Period Filter -->
+              <div class="filter-section">
+                <div class="filter-section-title">Time Period</div>
+                <div class="filter-options">
+                  <div class="filter-option">
+                    <input type="radio" name="timePeriod" id="period-today">
+                    <label for="period-today">Today</label>
+                  </div>
+                  <div class="filter-option">
+                    <input type="radio" name="timePeriod" id="period-week" checked>
+                    <label for="period-week">This Week</label>
+                  </div>
+                  <div class="filter-option">
+                    <input type="radio" name="timePeriod" id="period-month">
+                    <label for="period-month">This Month</label>
+                  </div>
+                  <div class="filter-option">
+                    <input type="radio" name="timePeriod" id="period-custom">
+                    <label for="period-custom">Custom Range</label>
+                  </div>
+                </div>
+                <div class="date-inputs" id="customDateRange" style="display: none;">
+                  <div class="date-input">
+                    <input type="date" id="dateFrom" placeholder="From Date" value="2025-10-11">
+                  </div>
+                  <div class="date-input">
+                    <input type="date" id="dateTo" placeholder="To Date" value="2025-11-17">
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Order Status Filters -->
+              <div class="filter-section">
+                <div class="filter-section-title">Order Status</div>
+                <div class="filter-options">
+                  <div class="filter-option">
+                    <input type="checkbox" id="status-all" checked>
+                    <label for="status-all">All Status</label>
+                  </div>
+                  <div class="filter-option">
+                    <input type="checkbox" id="status-completed">
+                    <label for="status-completed">Completed</label>
+                  </div>
+                  <div class="filter-option">
+                    <input type="checkbox" id="status-pending">
+                    <label for="status-pending">Pending</label>
+                  </div>
+                  <div class="filter-option">
+                    <input type="checkbox" id="status-cancelled">
+                    <label for="status-cancelled">Cancelled</label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Payment Method Filters -->
+              <div class="filter-section">
+                <div class="filter-section-title">Payment Methods</div>
+                <div class="filter-options">
+                  <div class="filter-option">
+                    <input type="checkbox" id="method-all" checked>
+                    <label for="method-all">All Methods</label>
+                  </div>
+                  <div class="filter-option">
+                    <input type="checkbox" id="method-cash">
+                    <label for="method-cash">Cash</label>
+                  </div>
+                  <div class="filter-option">
+                    <input type="checkbox" id="method-gcash">
+                    <label for="method-gcash">GCash</label>
+                  </div>
+                  <div class="filter-option">
+                    <input type="checkbox" id="method-card">
+                    <label for="method-card">Card</label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Payment Status Filters -->
+              <div class="filter-section">
+                <div class="filter-section-title">Payment Status</div>
+                <div class="filter-options">
+                  <div class="filter-option">
+                    <input type="checkbox" id="payment-all" checked>
+                    <label for="payment-all">All Status</label>
+                  </div>
+                  <div class="filter-option">
+                    <input type="checkbox" id="payment-paid">
+                    <label for="payment-paid">Paid</label>
+                  </div>
+                  <div class="filter-option">
+                    <input type="checkbox" id="payment-unpaid">
+                    <label for="payment-unpaid">Unpaid</label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Action Buttons -->
+              <div class="filter-actions">
+                <button class="btn-apply" id="applyFilters">Apply Filters</button>
+                <button class="btn-clear" id="clearFilters">Reset Filters</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Active Filters Display -->
+        <div class="active-filters" id="activeFilters">
+          <!-- Filter tags will be dynamically added here -->
+        </div>
       </div>
     </div>
   </div>
@@ -332,22 +853,317 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   // Filter functionality
+  const filterToggle = document.getElementById('filterToggle');
+  const filterMenu = document.getElementById('filterMenu');
+  const activeFilters = document.getElementById('activeFilters');
+  const customDateRange = document.getElementById('customDateRange');
+  
+  // User dropdown functionality
+  const userDropdownToggle = document.getElementById('userDropdownToggle');
+  const userDropdownMenu = document.getElementById('userDropdownMenu');
+  
+  // Store current filters
+  let currentFilters = {
+    timePeriod: 'This Week',
+    orderStatus: ['All Status'],
+    paymentMethods: ['All Methods'],
+    paymentStatus: ['All Status']
+  };
+  
+  // Filter toggle
+  filterToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const isVisible = filterMenu.style.display === 'block';
+    filterMenu.style.display = isVisible ? 'none' : 'block';
+    filterToggle.classList.toggle('active', !isVisible);
+  });
+  
+  // User dropdown toggle
+  userDropdownToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const isVisible = userDropdownMenu.style.display === 'block';
+    userDropdownMenu.style.display = isVisible ? 'none' : 'block';
+  });
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function() {
+    filterMenu.style.display = 'none';
+    filterToggle.classList.remove('active');
+    userDropdownMenu.style.display = 'none';
+  });
+  
+  // Prevent closing when clicking inside the filter menu
+  filterMenu.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+  
+  // Prevent closing when clicking inside the user dropdown
+  userDropdownMenu.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+  
+  // Show/hide custom date range
+  document.querySelectorAll('input[name="timePeriod"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (this.id === 'period-custom') {
+        customDateRange.style.display = 'flex';
+      } else {
+        customDateRange.style.display = 'none';
+      }
+    });
+  });
+  
+  // Apply filters
   document.getElementById('applyFilters').addEventListener('click', function() {
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
-    const status = document.getElementById('statusFilter').value;
-    const paymentMethod = document.getElementById('paymentMethodFilter').value;
+    filterMenu.style.display = 'none';
+    filterToggle.classList.remove('active');
     
-    // In a real application, this would make an API call or reload the page with filters
-    alert('Filters applied! (This would refresh the data in a real application)');
+    // Update current filters based on selections
+    updateCurrentFilters();
+    
+    // Update active filters display
+    updateActiveFilters();
+    
+    // Here you would typically refresh transaction data based on filters
+    console.log('Filters applied - refreshing transaction data...');
   });
-
-  document.getElementById('resetFilters').addEventListener('click', function() {
-    document.getElementById('dateFrom').value = '2025-10-11';
-    document.getElementById('dateTo').value = '2025-11-17';
-    document.getElementById('statusFilter').value = '';
-    document.getElementById('paymentMethodFilter').value = '';
+  
+  // Clear filters
+  document.getElementById('clearFilters').addEventListener('click', function() {
+    // Clear all checkboxes and radios
+    document.querySelectorAll('.filter-option input[type="checkbox"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
+    
+    // Set default values
+    document.getElementById('period-today').checked = false;
+    document.getElementById('period-week').checked = true;
+    document.getElementById('period-month').checked = false;
+    document.getElementById('status-all').checked = true;
+    document.getElementById('method-all').checked = true;
+    document.getElementById('payment-all').checked = true;
+    
+    // Hide custom date range
+    customDateRange.style.display = 'none';
+    
+    // Update current filters to defaults
+    currentFilters = {
+      timePeriod: 'This Week',
+      orderStatus: ['All Status'],
+      paymentMethods: ['All Methods'],
+      paymentStatus: ['All Status']
+    };
+    
+    // Update active filters
+    updateActiveFilters();
   });
+  
+  function updateCurrentFilters() {
+    // Update time period
+    if (document.getElementById('period-today').checked) {
+      currentFilters.timePeriod = 'Today';
+    } else if (document.getElementById('period-week').checked) {
+      currentFilters.timePeriod = 'This Week';
+    } else if (document.getElementById('period-month').checked) {
+      currentFilters.timePeriod = 'This Month';
+    } else if (document.getElementById('period-custom').checked) {
+      const fromDate = document.getElementById('dateFrom').value;
+      const toDate = document.getElementById('dateTo').value;
+      currentFilters.timePeriod = `Custom: ${fromDate} to ${toDate}`;
+    }
+    
+    // Update order status
+    currentFilters.orderStatus = [];
+    if (document.getElementById('status-all').checked) {
+      currentFilters.orderStatus.push('All Status');
+    } else {
+      if (document.getElementById('status-completed').checked) {
+        currentFilters.orderStatus.push('Completed');
+      }
+      if (document.getElementById('status-pending').checked) {
+        currentFilters.orderStatus.push('Pending');
+      }
+      if (document.getElementById('status-cancelled').checked) {
+        currentFilters.orderStatus.push('Cancelled');
+      }
+    }
+    
+    // Update payment methods
+    currentFilters.paymentMethods = [];
+    if (document.getElementById('method-all').checked) {
+      currentFilters.paymentMethods.push('All Methods');
+    } else {
+      if (document.getElementById('method-cash').checked) {
+        currentFilters.paymentMethods.push('Cash');
+      }
+      if (document.getElementById('method-gcash').checked) {
+        currentFilters.paymentMethods.push('GCash');
+      }
+      if (document.getElementById('method-card').checked) {
+        currentFilters.paymentMethods.push('Card');
+      }
+    }
+    
+    // Update payment status
+    currentFilters.paymentStatus = [];
+    if (document.getElementById('payment-all').checked) {
+      currentFilters.paymentStatus.push('All Status');
+    } else {
+      if (document.getElementById('payment-paid').checked) {
+        currentFilters.paymentStatus.push('Paid');
+      }
+      if (document.getElementById('payment-unpaid').checked) {
+        currentFilters.paymentStatus.push('Unpaid');
+      }
+    }
+  }
+  
+  function updateActiveFilters() {
+    // Clear existing filter tags
+    activeFilters.innerHTML = '';
+    
+    // Check if we have any non-default filters
+    const hasCustomFilters = 
+      currentFilters.timePeriod !== 'This Week' ||
+      currentFilters.orderStatus.length !== 1 || 
+      currentFilters.orderStatus[0] !== 'All Status' ||
+      currentFilters.paymentMethods.length !== 1 || 
+      currentFilters.paymentMethods[0] !== 'All Methods' ||
+      currentFilters.paymentStatus.length !== 1 || 
+      currentFilters.paymentStatus[0] !== 'All Status';
+    
+    if (!hasCustomFilters) {
+      // No custom filters applied, hide the active filters section
+      activeFilters.classList.remove('has-filters');
+      return;
+    }
+    
+    // Show active filters section
+    activeFilters.classList.add('has-filters');
+    
+    // Add time period filter tag if not default
+    if (currentFilters.timePeriod !== 'This Week') {
+      const timeTag = createFilterTag(`Time: ${currentFilters.timePeriod}`, 'timePeriod');
+      activeFilters.appendChild(timeTag);
+    }
+    
+    // Add order status filter tags if not "All Status"
+    if (currentFilters.orderStatus.length > 0 && 
+        (currentFilters.orderStatus.length > 1 || currentFilters.orderStatus[0] !== 'All Status')) {
+      currentFilters.orderStatus.forEach(status => {
+        const statusTag = createFilterTag(`Order: ${status}`, `status-${status.toLowerCase().replace(' ', '-')}`);
+        activeFilters.appendChild(statusTag);
+      });
+    }
+    
+    // Add payment method filter tags if not "All Methods"
+    if (currentFilters.paymentMethods.length > 0 && 
+        (currentFilters.paymentMethods.length > 1 || currentFilters.paymentMethods[0] !== 'All Methods')) {
+      currentFilters.paymentMethods.forEach(method => {
+        const methodTag = createFilterTag(`Method: ${method}`, `method-${method.toLowerCase()}`);
+        activeFilters.appendChild(methodTag);
+      });
+    }
+    
+    // Add payment status filter tags if not "All Status"
+    if (currentFilters.paymentStatus.length > 0 && 
+        (currentFilters.paymentStatus.length > 1 || currentFilters.paymentStatus[0] !== 'All Status')) {
+      currentFilters.paymentStatus.forEach(status => {
+        const paymentTag = createFilterTag(`Payment: ${status}`, `payment-${status.toLowerCase()}`);
+        activeFilters.appendChild(paymentTag);
+      });
+    }
+  }
+  
+  function createFilterTag(text, filterType) {
+    const tag = document.createElement('div');
+    tag.className = 'filter-tag';
+    
+    const span = document.createElement('span');
+    span.textContent = text;
+    
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'filter-tag-remove';
+    removeBtn.setAttribute('data-filter', filterType);
+    removeBtn.innerHTML = '×';
+    removeBtn.addEventListener('click', function() {
+      removeFilter(filterType);
+    });
+    
+    tag.appendChild(span);
+    tag.appendChild(removeBtn);
+    
+    return tag;
+  }
+  
+  function removeFilter(filterType) {
+    // Remove the specific filter and update the UI
+    if (filterType === 'timePeriod') {
+      document.getElementById('period-week').checked = true;
+      currentFilters.timePeriod = 'This Week';
+    } else if (filterType.startsWith('status-')) {
+      const filterName = filterType.replace('status-', '').replace('-', ' ');
+      const index = currentFilters.orderStatus.indexOf(
+        filterName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+      );
+      if (index > -1) {
+        currentFilters.orderStatus.splice(index, 1);
+      }
+    } else if (filterType.startsWith('method-')) {
+      const filterName = filterType.replace('method-', '');
+      const index = currentFilters.paymentMethods.indexOf(
+        filterName.charAt(0).toUpperCase() + filterName.slice(1)
+      );
+      if (index > -1) {
+        currentFilters.paymentMethods.splice(index, 1);
+      }
+    } else if (filterType.startsWith('payment-')) {
+      const filterName = filterType.replace('payment-', '');
+      const index = currentFilters.paymentStatus.indexOf(
+        filterName.charAt(0).toUpperCase() + filterName.slice(1)
+      );
+      if (index > -1) {
+        currentFilters.paymentStatus.splice(index, 1);
+      }
+    }
+    
+    // Update the checkboxes/radios to reflect the change
+    updateFilterInputs();
+    
+    // Update active filters display
+    updateActiveFilters();
+    
+    // Here you would typically refresh transaction data
+    console.log('Filter removed - refreshing transaction data...');
+  }
+  
+  function updateFilterInputs() {
+    // Update time period radio
+    if (currentFilters.timePeriod === 'Today') {
+      document.getElementById('period-today').checked = true;
+    } else if (currentFilters.timePeriod === 'This Week') {
+      document.getElementById('period-week').checked = true;
+    } else if (currentFilters.timePeriod === 'This Month') {
+      document.getElementById('period-month').checked = true;
+    }
+    
+    // Update order status checkboxes
+    document.getElementById('status-all').checked = currentFilters.orderStatus.includes('All Status');
+    document.getElementById('status-completed').checked = currentFilters.orderStatus.includes('Completed');
+    document.getElementById('status-pending').checked = currentFilters.orderStatus.includes('Pending');
+    document.getElementById('status-cancelled').checked = currentFilters.orderStatus.includes('Cancelled');
+    
+    // Update payment method checkboxes
+    document.getElementById('method-all').checked = currentFilters.paymentMethods.includes('All Methods');
+    document.getElementById('method-cash').checked = currentFilters.paymentMethods.includes('Cash');
+    document.getElementById('method-gcash').checked = currentFilters.paymentMethods.includes('GCash');
+    document.getElementById('method-card').checked = currentFilters.paymentMethods.includes('Card');
+    
+    // Update payment status checkboxes
+    document.getElementById('payment-all').checked = currentFilters.paymentStatus.includes('All Status');
+    document.getElementById('payment-paid').checked = currentFilters.paymentStatus.includes('Paid');
+    document.getElementById('payment-unpaid').checked = currentFilters.paymentStatus.includes('Unpaid');
+  }
 </script>
 </body>
 </html>
