@@ -126,14 +126,9 @@
       <div class="collapse" id="salesSubmenu">
         <div class="nav flex-column ms-3">
 
-          {{-- Orders --}}
-          <a class="nav-link" href="{{ route('cashier.orders.index') }}">
-            <i class="bi bi-cart-check me-2"></i> Orders
-          </a>
-
-          {{-- Payments --}}
-          <a class="nav-link" href="{{ route('cashier.payments.index') }}">
-            <i class="bi bi-credit-card me-2"></i> Payments
+          {{-- Sales (Combined Orders & Payments) --}}
+          <a class="nav-link" href="{{ route('cashier.sales.index') }}">
+            <i class="bi bi-bag-check me-2"></i> Sales
           </a>
 
           {{-- Transactions History --}}

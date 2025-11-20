@@ -59,8 +59,7 @@
       </a>
       <div class="collapse" id="salesSubmenu">
         <div class="nav flex-column ms-3">
-          <a class="nav-link" href="{{ route('cashier.orders.index') }}"><i class="bi bi-cart-check me-2"></i> Orders</a>
-          <a class="nav-link" href="{{ route('cashier.payments.index') }}"><i class="bi bi-credit-card me-2"></i> Payments</a>
+          <a class="nav-link" href="{{ route('cashier.sales.index') }}"><i class="bi bi-bag-check me-2"></i> Sales</a>
           <a class="nav-link" href="{{ route('cashier.transactions.index') }}"><i class="bi bi-clock-history me-2"></i> Transaction History</a>
         </div>
       </div>
@@ -157,7 +156,7 @@
                 <td><strong class="text-success">₱{{ number_format($data['amount'], 2) }}</strong></td>
                 <td>
                   <div class="progress" style="height:20px;">
-                    <div class="progress-bar bg-success" style="width: {{ $data['percentage'] }}%">
+                    <div class="progress-bar bg-success" data-width="{{ $data['percentage'] }}">
                       {{ number_format($data['percentage'], 1) }}%
                     </div>
                   </div>
@@ -193,6 +192,13 @@
     link.download = `daily-sales-{{ $selectedDate->format('Y-m-d') }}.csv`;
     link.click();
   }
+
+  // Set progress bar widths
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.progress-bar[data-width]').forEach(bar => {
+      bar.style.width = bar.getAttribute('data-width') + '%';
+    });
+  });
 </script>
 </body>
 </html>

@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
-use App\Models\Customer;
 
 class OrderController extends Controller
 {
@@ -87,15 +86,82 @@ class OrderController extends Controller
     }
 
     /**
+     * Display combined sales view (Orders + Payments).
+     */
+    public function sales()
+    {
+        // Sample orders data
+        $orders = [
+            (object)[
+                'OrderID' => 'ORD-001',
+                'OrderDate' => now()->subDays(2),
+                'TotalAmount' => 1250.75,
+                'OrderStatus' => 'Completed',
+                'PaymentStatus' => 'Paid',
+                'customer' => (object)[
+                    'CustFName' => 'Maria',
+                    'CustLName' => 'Santos',
+                    'CustPhone' => '09123456789'
+                ],
+                'items_count' => 3,
+                'order_details' => [
+                    (object)['ProductID' => 'PRD-001', 'Qty' => 1, 'UnitPrice' => 899.75],
+                    (object)['ProductID' => 'PRD-003', 'Qty' => 2, 'UnitPrice' => 175.50]
+                ]
+            ],
+            (object)[
+                'OrderID' => 'ORD-002',
+                'OrderDate' => now()->subDays(1),
+                'TotalAmount' => 560.25,
+                'OrderStatus' => 'Processing',
+                'PaymentStatus' => 'Pending',
+                'customer' => (object)[
+                    'CustFName' => 'Juan',
+                    'CustLName' => 'Dela Cruz',
+                    'CustPhone' => '09198765432'
+                ],
+                'items_count' => 2,
+                'order_details' => [
+                    (object)['ProductID' => 'PRD-002', 'Qty' => 1, 'UnitPrice' => 560.25]
+                ]
+            ],
+        ];
+
+        // Sample payments data
+        $payments = [
+            [
+                'PaymentID' => 'PAY-001',
+                'OrderID' => 'ORD-001',
+                'CustomerName' => 'Maria Santos',
+                'Amount' => 1250.75,
+                'PaymentMethod' => 'Cash',
+                'Status' => 'Paid',
+                'created_at' => now()->subDays(2)
+            ],
+            [
+                'PaymentID' => 'PAY-002',
+                'OrderID' => 'ORD-003',
+                'CustomerName' => 'Ana Reyes',
+                'Amount' => 1600.00,
+                'PaymentMethod' => 'GCash',
+                'Status' => 'Paid',
+                'created_at' => now()->subHours(6)
+            ],
+        ];
+
+        return view('cashier.sales.index', compact('orders', 'payments'));
+    }
+
+    /**
      * Show the form for creating a new order.
      */
     public function create()
     {
         // Get products for the order form
         $products = Product::where('Status', 'Active')->get();
-        $customers = Customer::all();
+        // $customers = Customer::all();
         
-        return view('cashier.orders.create', compact('products', 'customers'));
+        return view('cashier.orders.create', compact('products'));
     }
 
     /**
@@ -129,8 +195,9 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = Order::with(['customer', 'orderDetails.product'])->findOrFail($id);
-        return view('cashier.orders.show', compact('order'));
+        // $order = Order::with(['customer', 'orderDetails.product'])->findOrFail($id);
+        // return view('cashier.orders.show', compact('order'));
+        return redirect()->route('cashier.orders.index');
     }
 
     /**

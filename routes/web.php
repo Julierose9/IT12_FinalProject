@@ -133,6 +133,11 @@ Route::middleware('auth')->group(function () {
         // Dashboard
         Route::get('/dashboard', [CashierDashboardController::class, 'index'])->name('dashboard');
 
+        // Combined Sales Routes (Orders + Payments)
+        Route::prefix('sales')->name('sales.')->group(function () {
+            Route::get('/', [CashierOrderController::class, 'sales'])->name('index');
+        });
+
         // Orders Routes
         Route::prefix('orders')->name('orders.')->group(function () {
             Route::get('/', [CashierOrderController::class, 'index'])->name('index');
