@@ -425,26 +425,24 @@
     }
     
     .status-badge {
-      padding: 6px 12px;
-      border-radius: 20px;
+      padding: 0;
+      border-radius: 0;
       font-size: 0.75rem;
       font-weight: 500;
-    }
-    
-    .status-damaged {
-      background-color: #ffeaea;
+      background-color: transparent !important;
+  }
+
+  .status-damaged {
       color: #e05252;
-    }
-    
-    .status-expired {
-      background-color: #fff4e6;
+  }
+
+  .status-expired {
       color: #f08a24;
-    }
-    
-    .status-return {
-      background-color: #e8f7f0;
+  }
+
+  .status-return {
       color: #23b07a;
-    }
+  }
 
     /* Modal styling */
     .modal-header {
