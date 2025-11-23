@@ -13,7 +13,8 @@ return new class extends Migration {
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->integer('quantity')->default(1);
             $table->decimal('unit_price', 12, 2)->default(0); // store price at time of sale
-            $table->decimal('line_total', 12, 2)->virtualAs('quantity * unit_price')->nullable(false);
+            $table->decimal('line_total', 12, 2)->storedAs('quantity * unit_price');
+
             $table->timestamps();
         });
     }

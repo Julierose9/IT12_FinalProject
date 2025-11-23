@@ -9,12 +9,13 @@ return new class extends Migration {
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('middle_name')->nullable();
-            $table->string('contact_number')->nullable();
-            $table->enum('role', ['Cashier','SalesPerson','InventoryManager','Owner'])->default('SalesPerson');
-            $table->enum('status', ['Active','Inactive'])->default('Active');
+            $table->string('EmployeeFName');
+            $table->string('EmployeeLName');
+            $table->string('EmployeeMName')->nullable();
+            $table->string('EmployeeContactNum')->nullable();
+            $table->enum('EmployeeRole', ['Cashier','SalesPerson','InventoryManager','Owner'])->default('SalesPerson');
+            $table->enum('EmployeeStatus', ['Active','Inactive'])->default('Active');
+            $table->date('hire_date');
             $table->timestamps();
         });
     }
